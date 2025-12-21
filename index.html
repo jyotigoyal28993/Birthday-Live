@@ -173,58 +173,127 @@
 </div>
 
 <!-- Dashboard -->
-<div id="dashboard">
-  <h2>🎉 Birthday Insights Unlocked!</h2>
-  <p class="subtext">Explore what makes you… you!</p>
+<!-- Dashboard (after password unlock) -->
+<div id="dashboard" style="display:none;">
 
-  <div class="behavior-card" style="background-color:#E8F0FE;">
-    <div class="behavior-title">Overthink Index: 87%</div>
-    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#4A90E2;"></div></div>
-    <div class="behavior-comment">Careful decision-making leads to high-quality outcomes.</div>
+  <!-- Top header -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h2 style="margin:0; font-size:32px;">🎉 Birthday Insights</h2>
+    <div class="bonus-card" onclick="this.querySelector('p').style.display='block'" style="width:50px; text-align:center; cursor:pointer;">
+      🎁
+      <p style="display:none; font-size:12px; margin-top:5px;">Softie inside + loves Indian food + holiday vibes</p>
+    </div>
   </div>
 
-  <div class="behavior-card" style="background-color:#E6F7F1;">
-    <div class="behavior-title">Practicality Score: 92%</div>
-    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#3CB371;"></div></div>
-    <div class="behavior-comment">Always finds feasible solutions.</div>
+  <!-- Cards Grid -->
+  <div id="dashboard-cards" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;">
+
+    <div class="behavior-card" style="background-color:#E8F0FE;">
+      <div class="behavior-title">Overthink Index: 87%</div>
+      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#4A90E2;"></div></div>
+      <div class="behavior-comment">Careful decision-making leads to high-quality outcomes.</div>
+    </div>
+
+    <div class="behavior-card" style="background-color:#E6F7F1;">
+      <div class="behavior-title">Practicality Score: 92%</div>
+      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#3CB371;"></div></div>
+      <div class="behavior-comment">Always finds feasible solutions.</div>
+    </div>
+
+    <div class="behavior-card" style="background-color:#FFF8E1;">
+      <div class="behavior-title">Attention to Detail: 95%</div>
+      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FFD700;"></div></div>
+      <div class="behavior-comment">Notices patterns most people miss.</div>
+    </div>
+
+    <div class="behavior-card" style="background-color:#FDECE6;">
+      <div class="behavior-title">Ambition Quotient: 88%</div>
+      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF8C42;"></div></div>
+      <div class="behavior-comment">Pushes goals just above the usual bar.</div>
+    </div>
+
+    <div class="behavior-card" style="background-color:#EDE7F6;">
+      <div class="behavior-title">Consideration Factor: 94%</div>
+      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#9B59B6;"></div></div>
+      <div class="behavior-comment">Subtle empathy, big impact.</div>
+    </div>
+
+    <div class="behavior-card" style="background-color:#FFF0F5;">
+      <div class="behavior-title">Lovability Metric: 100%</div>
+      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF69B4;"></div></div>
+      <div class="behavior-comment">Cannot quantify, but confirmed by social feedback.</div>
+    </div>
+
   </div>
 
-  <div class="behavior-card" style="background-color:#FFF8E1;">
-    <div class="behavior-title">Attention to Detail: 95%</div>
-    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FFD700;"></div></div>
-    <div class="behavior-comment">Notices patterns most people miss.</div>
-  </div>
-
-  <div class="behavior-card" style="background-color:#FDECE6;">
-    <div class="behavior-title">Ambition Quotient: 88%</div>
-    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF8C42;"></div></div>
-    <div class="behavior-comment">Pushes goals just above the usual bar.</div>
-  </div>
-
-  <div class="behavior-card" style="background-color:#EDE7F6;">
-    <div class="behavior-title">Consideration Factor: 94%</div>
-    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#9B59B6;"></div></div>
-    <div class="behavior-comment">Subtle empathy, big impact.</div>
-  </div>
-
-  <div class="behavior-card" style="background-color:#FFF0F5;">
-    <div class="behavior-title">Lovability Metric: 100%</div>
-    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF69B4;"></div></div>
-    <div class="behavior-comment">Cannot quantify, but confirmed by social feedback.</div>
-  </div>
-
-  <div class="bonus-card" onclick="this.querySelector('p').style.display='block'">
-    🎁 Hidden Personality Insights
-    <p>Softie from inside, loves Indian food, enjoys holiday vibes, secretly playful.</p>
-  </div>
-
-  <div id="llm-panel">
+  <!-- LLM Panel -->
+  <div id="llm-panel" style="background-color:#D5F5E3; border-radius:12px; padding:15px; margin-top:30px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
     <h3>🎯 Birthday LLM Insight</h3>
     <p>Based on 365 days of interactions: attention to detail drives success, ambition + empathy is rare, hidden preferences detected.</p>
     <button onclick="showLLMExtra()">Ask Birthday LLM a Question</button>
     <p id="llm-extra"></p>
   </div>
 </div>
+
+<script>
+  // Animate behavior cards
+  function animateCards(){
+    const cards = document.querySelectorAll(".behavior-card");
+    cards.forEach((card,index)=>{
+      setTimeout(()=>{
+        card.classList.add("show");
+        const bar = card.querySelector(".behavior-bar");
+        const percent = parseInt(card.querySelector(".behavior-title").innerText.match(/\d+/)[0]);
+        bar.style.width = percent + "%";
+      }, index*400);
+    });
+  }
+
+  function showLLMExtra(){
+    const responses = [
+      "Your kindness multiplies team success.",
+      "Ambition plus consideration = unstoppable.",
+      "Your curiosity is contagious.",
+      "Even small gestures leave big impacts."
+    ];
+    const random = responses[Math.floor(Math.random()*responses.length)];
+    document.getElementById("llm-extra").innerText = random;
+  }
+</script>
+
+<style>
+  /* Behavior card base styles */
+  .behavior-card{
+    border-radius:12px;
+    padding:15px 20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    opacity:0;
+    transform:translateY(20px);
+    transition:all 0.6s ease;
+  }
+  .behavior-card.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .behavior-title{ font-weight:600; margin-bottom:8px; }
+  .behavior-bar-container{
+    width:100%;
+    border-radius:8px;
+    height:12px;
+    margin-bottom:5px;
+    overflow:hidden;
+    background-color:#eee;
+  }
+  .behavior-bar{
+    height:12px;
+    border-radius:8px;
+    width:0;
+  }
+  .behavior-comment{ font-size:14px; color:#555; }
+  .bonus-card{ border-radius:12px; padding:10px; text-align:center; cursor:pointer; }
+  .bonus-card p{ display:none; margin-top:8px; font-style:italic; font-size:12px; }
+</style>
+
 
 <script>
   // Celebration ribbons on landing page
@@ -295,4 +364,5 @@
 
 </body>
 </html>
+
 

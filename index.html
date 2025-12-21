@@ -1,415 +1,262 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Birthday Dashboard</title>
-  <style>
+<meta charset="UTF-8" />
+<title>Birthday Live</title>
+
+<style>
+/* ---------- GLOBAL ---------- */
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
-  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #f8fafc;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-/* Landing page – minimal & product-like */
-/* Landing page – clean, neutral, product-first */
-body {
-  background-color: #ffffff; /* kill pink completely */
+.hidden {
+  display: none;
 }
 
+button {
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: white;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+/* ---------- LANDING ---------- */
 #landing {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.landing-container {
+  text-align: center;
+  z-index: 2;
+}
+
+.landing-yes {
+  font-size: 96px;
+  font-weight: 700;
+  color: #111;
+}
+
+.landing-sub {
+  font-size: 22px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  color: #333;
+}
+
+.landing-btn {
+  margin-top: 40px;
+}
+
+/* ---------- RIBBONS ---------- */
+.ribbon {
+  position: absolute;
+  top: -40px;
+  width: 6px;
+  height: 24px;
+  background: linear-gradient(to bottom, #d4af37, #f3e5ab);
+  opacity: 0.7;
+  animation: fall 6s linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+/* ---------- UNLOCK ---------- */
+#unlock {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.landing-container {
+.unlock-card {
+  background: white;
+  padding: 32px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   text-align: center;
-  transform: translateY(-6px);
+  width: 320px;
 }
 
-.landing-yes {
-  font-size: 96px;
-  font-weight: 700;
-  letter-spacing: -2px;
-  color: #111;
-}
-
-.landing-sub {
-  font-size: 22px;
-  margin-top: 6px;
-  color: #333;
-}
-
-.landing-btn {
-  margin-top: 42px;
-  background: none;
-  border: 1px solid #ddd;
-  padding: 10px 18px;
-  font-size: 14px;
-  cursor: pointer;
+.unlock-card input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 16px;
   border-radius: 6px;
-  color: #111;
+  border: 1px solid #ccc;
 }
 
-.landing-btn:hover {
-  background-color: #f6f6f6;
+.hint {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #666;
 }
 
-    /* Landing Page */
-    #landing {
-      text-align: center;
-      display: block;
-    }
-    #landing h1 {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    #landing p {
-      font-size: 18px;
-      color: #555;
-      margin-bottom: 30px;
-    }
-    #landing button {
-      padding: 12px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background-color: #ff99cc;
-      cursor: pointer;
-      font-weight: 600;
-    }
+/* ---------- DASHBOARD ---------- */
+#dashboard {
+  height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+}
 
-    /* Unlock Section */
-#unlock-section {
-  max-width: 400px;
-  margin: 50px auto;
-  background: linear-gradient(to bottom right, #f0f4f8, #e2e8f0); /* soft neutral gradient */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-  display: none;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
-    #unlock-section input {
-      padding: 8px 12px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 60%;
-      margin-right: 10px;
-    }
-#unlock-section button {
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  background-color: #4A90E2; /* blue button */
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+.card h3 {
+  margin-top: 0;
+  font-size: 16px;
 }
 
-    #unlock-section p.hint {
-      font-size: 12px;
-      color: #555;
-      margin-top: 8px;
-    }
-    #unlock-section p.error {
-      font-size: 14px;
-      color: red;
-      display: none;
-      margin-top: 8px;
-    }
+.progress {
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 10px;
+}
 
-    /* Celebration Ribbons */
-    .ribbon {
-      position: fixed;
-      top: -20px;
-      width: 6px;
-      height: 18px;
-      border-radius: 3px;
-      opacity: 0.9;
-      z-index: 9999;
-      pointer-events: none;
-      animation: ribbonFall linear forwards;
-    }
-    @keyframes ribbonFall {
-      0% { transform: translateY(0) rotate(0deg) translateX(0); opacity:1; }
-      50% { transform: translateY(50vh) rotate(180deg) translateX(10px);}
-      100% { transform: translateY(95vh) rotate(360deg) translateX(-10px); opacity:0;}
-    }
+.progress > div {
+  height: 100%;
+  background: #2563eb;
+}
 
-    /* Dashboard */
-    #dashboard {
-      max-width: 600px;
-      margin: 0 auto;
-      display: none;
-    }
-    #dashboard h2 {
-      text-align: center;
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    #dashboard p.subtext {
-      text-align: center;
-      color: #555;
-      font-size: 16px;
-      margin-bottom: 30px;
-    }
-
-    /* Behavior Cards */
-    .behavior-card{
-      border-radius:12px;
-      padding:15px 20px;
-      margin-bottom:15px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.1);
-      opacity:0;
-      transform:translateY(20px);
-      transition:all 0.6s ease;
-    }
-    .behavior-card.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-    .behavior-title{ font-weight:600; margin-bottom:8px; }
-    .behavior-bar-container{
-      width:100%;
-      border-radius:8px;
-      height:12px;
-      margin-bottom:5px;
-      overflow:hidden;
-      background-color:#eee;
-    }
-    .behavior-bar{
-      height:12px;
-      border-radius:8px;
-      width:0;
-    }
-    .behavior-comment{ font-size:14px; color:#555; }
-
-    /* Bonus Card */
-    .bonus-card{ border-radius:12px; padding:15px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1); cursor:pointer; background-color:#DDEBF7;}
-    .bonus-card p{ display:none; margin-top:8px; font-style:italic; }
-
-    /* LLM Panel */
-    #llm-panel{ background-color:#D5F5E3; border-radius:12px; padding:15px; margin-top:30px; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-    #llm-panel button{ margin-top:10px; padding:6px 12px; border-radius:8px; border:none; background-color:#3CB371; cursor:pointer; font-weight:600; }
-    #llm-extra{ margin-top:8px; font-style:italic; }
-  </style>
+/* ---------- SURPRISE ---------- */
+.surprise {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+</style>
 </head>
+
 <body>
 
-<!-- Landing Page -->
+<!-- LANDING -->
 <div id="landing">
   <div class="landing-container">
     <div class="landing-yes">Yes.</div>
     <div class="landing-sub">🎂 Happy Birthday.</div>
-
-    <button class="landing-btn" onclick="showUnlock()">
-      Unlock birthday insights →
-    </button>
+    <button class="landing-btn" onclick="showUnlock()">Unlock birthday insights →</button>
   </div>
 </div>
 
-
-
-<!-- Dashboard -->
-<!-- Dashboard (after password unlock) -->
-<div id="dashboard" style="display:none;">
-
-  <!-- Top header -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h2 style="margin:0; font-size:32px;">🎉 Birthday Insights</h2>
-    <div class="bonus-card" onclick="this.querySelector('p').style.display='block'" style="width:50px; text-align:center; cursor:pointer;">
-      🎁
-      <p style="display:none; font-size:12px; margin-top:5px;">Softie inside + loves Indian food + holiday vibes</p>
+<!-- UNLOCK -->
+<div id="unlock" class="hidden">
+  <div class="unlock-card">
+    <strong>Protected Insights</strong>
+    <input type="password" id="password" placeholder="Enter password" />
+    <button style="margin-top:16px" onclick="unlock()">Unlock</button>
+    <div class="hint">
+      Hint: Month and year you landed in the US (no space)<br/>
+      example: december2050
     </div>
   </div>
+</div>
 
-  <!-- Cards Grid -->
-  <div id="dashboard-cards" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;">
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+  <div class="surprise">🎁 Bonus unlocked</div>
 
-    <div class="behavior-card" style="background-color:#E8F0FE;">
-      <div class="behavior-title">Overthink Index: 87%</div>
-      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#4A90E2;"></div></div>
-      <div class="behavior-comment">Careful decision-making leads to high-quality outcomes.</div>
+  <div class="dashboard-grid">
+    <div class="card">
+      <h3>Practical Thinking</h3>
+      <div class="progress"><div style="width:92%"></div></div>
     </div>
 
-    <div class="behavior-card" style="background-color:#E6F7F1;">
-      <div class="behavior-title">Practicality Score: 92%</div>
-      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#3CB371;"></div></div>
-      <div class="behavior-comment">Always finds feasible solutions.</div>
+    <div class="card">
+      <h3>Detail Orientation</h3>
+      <div class="progress"><div style="width:88%"></div></div>
     </div>
 
-    <div class="behavior-card" style="background-color:#FFF8E1;">
-      <div class="behavior-title">Attention to Detail: 95%</div>
-      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FFD700;"></div></div>
-      <div class="behavior-comment">Notices patterns most people miss.</div>
+    <div class="card">
+      <h3>Ambition Index</h3>
+      <div class="progress"><div style="width:90%"></div></div>
     </div>
 
-    <div class="behavior-card" style="background-color:#FDECE6;">
-      <div class="behavior-title">Ambition Quotient: 88%</div>
-      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF8C42;"></div></div>
-      <div class="behavior-comment">Pushes goals just above the usual bar.</div>
+    <div class="card">
+      <h3>Softie (Hidden)</h3>
+      <p>Hard shell. Very soft core.<br/>Rarely visible. Always present.</p>
     </div>
 
-    <div class="behavior-card" style="background-color:#EDE7F6;">
-      <div class="behavior-title">Consideration Factor: 94%</div>
-      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#9B59B6;"></div></div>
-      <div class="behavior-comment">Subtle empathy, big impact.</div>
+    <div class="card">
+      <h3>Indian Food Affinity</h3>
+      <p>Misses home.<br/>Remembers flavors more than places.</p>
     </div>
 
-    <div class="behavior-card" style="background-color:#FFF0F5;">
-      <div class="behavior-title">Lovability Metric: 100%</div>
-      <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF69B4;"></div></div>
-      <div class="behavior-comment">Cannot quantify, but confirmed by social feedback.</div>
+    <div class="card">
+      <h3>LLM Curiosity</h3>
+      <p>Sees systems where others see tools.<br/>Future-facing.</p>
     </div>
-
-  </div>
-
-  <!-- LLM Panel -->
-  <div id="llm-panel" style="background-color:#D5F5E3; border-radius:12px; padding:15px; margin-top:30px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-    <h3>🎯 Birthday LLM Insight</h3>
-    <p>Based on 365 days of interactions: attention to detail drives success, ambition + empathy is rare, hidden preferences detected.</p>
-    <button onclick="showLLMExtra()">Ask Birthday LLM a Question</button>
-    <p id="llm-extra"></p>
   </div>
 </div>
 
 <script>
-  // Animate behavior cards
-  function animateCards(){
-    const cards = document.querySelectorAll(".behavior-card");
-    cards.forEach((card,index)=>{
-      setTimeout(()=>{
-        card.classList.add("show");
-        const bar = card.querySelector(".behavior-bar");
-        const percent = parseInt(card.querySelector(".behavior-title").innerText.match(/\d+/)[0]);
-        bar.style.width = percent + "%";
-      }, index*400);
-    });
-  }
+/* ---------- DATE CHECK ---------- */
+// Preview mode ON
+const today = new Date(2025, 11, 25);
 
-  function showLLMExtra(){
-    const responses = [
-      "Your kindness multiplies team success.",
-      "Ambition plus consideration = unstoppable.",
-      "Your curiosity is contagious.",
-      "Even small gestures leave big impacts."
-    ];
-    const random = responses[Math.floor(Math.random()*responses.length)];
-    document.getElementById("llm-extra").innerText = random;
-  }
-</script>
+const isBirthday =
+  today.getDate() === 25 &&
+  today.getMonth() === 11;
 
-<style>
-  /* Behavior card base styles */
-  .behavior-card{
-    border-radius:12px;
-    padding:15px 20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.12);
-    opacity:0;
-    transform:translateY(20px);
-    transition:all 0.6s ease;
-  }
-  .behavior-card.show{
-    opacity:1;
-    transform:translateY(0);
-  }
-  .behavior-title{ font-weight:600; margin-bottom:8px; }
-  .behavior-bar-container{
-    width:100%;
-    border-radius:8px;
-    height:12px;
-    margin-bottom:5px;
-    overflow:hidden;
-    background-color:#eee;
-  }
-  .behavior-bar{
-    height:12px;
-    border-radius:8px;
-    width:0;
-  }
-  .behavior-comment{ font-size:14px; color:#555; }
-  .bonus-card{ border-radius:12px; padding:10px; text-align:center; cursor:pointer; }
-  .bonus-card p{ display:none; margin-top:8px; font-style:italic; font-size:12px; }
-</style>
+if (!isBirthday) {
+  document.querySelector(".landing-yes").innerText = "No.";
+  document.querySelector(".landing-sub").innerText = "";
+  document.querySelector(".landing-btn").style.display = "none";
+}
 
+/* ---------- RIBBONS ---------- */
+for (let i = 0; i < 20; i++) {
+  const r = document.createElement("div");
+  r.className = "ribbon";
+  r.style.left = Math.random() * 100 + "vw";
+  r.style.animationDelay = Math.random() * 5 + "s";
+  document.body.appendChild(r);
+}
 
-<script>
-  // Celebration ribbons on landing page
-  function launchRibbons(){
-    const colors = ["#F6C1CC","#C3DDFD","#D5F5E3","#FDEBD0","#E8DAEF"];
-    const ribbonCount = 60;
-    for(let i=0;i<ribbonCount;i++){
-      const ribbon = document.createElement("div");
-      ribbon.className="ribbon";
-      ribbon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-      ribbon.style.left=Math.random()*100 + "vw";
-      ribbon.style.animationDuration = 2 + Math.random()*2 + "s";
-      ribbon.style.animationDelay = Math.random()*0.5 + "s";
-      document.body.appendChild(ribbon);
-      setTimeout(()=>{ribbon.remove();},4000);
-    }
+/* ---------- NAV ---------- */
+function showUnlock() {
+  landing.classList.add("hidden");
+  unlock.classList.remove("hidden");
+}
+
+function unlock() {
+  const val = document.getElementById("password").value;
+  if (val === "december2050") {
+    unlock.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+  } else {
+    alert("Incorrect password");
   }
-  launchRibbons();
-
-  // Show unlock section
-  function showUnlock(){
-    document.getElementById("landing").style.display="none";
-    document.getElementById("unlock-section").style.display="block";
-  }
-
-  // Password check
-  function checkPassword(){
-    const input = document.getElementById("password-input").value.toLowerCase();
-    const error = document.getElementById("unlock-error");
-    const dashboard = document.getElementById("dashboard");
-    const unlockSection = document.getElementById("unlock-section");
-
-    const correctPassword = "december2022"; // example
-    if(input === correctPassword){
-      unlockSection.style.display="none";
-      dashboard.style.display="block";
-      animateCards();
-    } else {
-      error.style.display="block";
-    }
-  }
-
-  // Animate behavior cards
-  function animateCards(){
-    const cards = document.querySelectorAll(".behavior-card");
-    cards.forEach((card,index)=>{
-      setTimeout(()=>{
-        card.classList.add("show");
-        const bar = card.querySelector(".behavior-bar");
-        const percent = parseInt(card.querySelector(".behavior-title").innerText.match(/\d+/)[0]);
-        bar.style.width = percent + "%";
-      }, index*400);
-    });
-  }
-
-  // LLM panel interactive button
-  function showLLMExtra(){
-    const responses = [
-      "Your kindness multiplies team success.",
-      "Ambition plus consideration = unstoppable.",
-      "Your curiosity is contagious.",
-      "Even small gestures leave big impacts."
-    ];
-    const random = responses[Math.floor(Math.random()*responses.length)];
-    document.getElementById("llm-extra").innerText = random;
-  }
+}
 </script>
 
 </body>
 </html>
-
-
-
-
-

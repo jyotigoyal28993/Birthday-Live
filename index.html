@@ -10,6 +10,49 @@
       background: linear-gradient(to bottom, #fffaf0, #ffe6f2);
       overflow-x: hidden;
     }
+/* Landing page – minimal & product-like */
+#landing {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-container {
+  text-align: center;
+}
+
+.landing-yes {
+  font-size: 96px;
+  font-weight: 700;
+  letter-spacing: -2px;
+}
+
+.landing-sub {
+  font-size: 20px;
+  margin-top: 8px;
+  color: #333;
+}
+
+.landing-meta {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.landing-btn {
+  margin-top: 40px;
+  background: none;
+  border: 1px solid #ddd;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.landing-btn:hover {
+  background-color: #f5f5f5;
+}
 
     /* Landing Page */
     #landing {
@@ -158,19 +201,17 @@
 
 <!-- Landing Page -->
 <div id="landing">
-  <h1>Yes!</h1>
-  <p>🎂 Happy Birthday!<br>Today the system reveals what makes you… you.</p>
-  <button onclick="showUnlock()">Unlock Your Birthday Insights</button>
+  <div class="landing-container">
+    <div class="landing-yes">Yes.</div>
+    <div class="landing-sub">It’s your birthday.</div>
+    <div class="landing-meta">(Verified by system date)</div>
+
+    <button class="landing-btn" onclick="showUnlock()">
+      Unlock birthday insights →
+    </button>
+  </div>
 </div>
 
-<!-- Unlock Section -->
-<div id="unlock-section">
-  <h2>🎁 Unlock Your Dashboard</h2>
-  <input type="text" id="password-input" placeholder="Password"/>
-  <button onclick="checkPassword()">Unlock</button>
-  <p class="hint">Hint: Month and year you landed in the US, no spaces (example: december2050)</p>
-  <p class="error" id="unlock-error">Wrong password!</p>
-</div>
 
 <!-- Dashboard -->
 <!-- Dashboard (after password unlock) -->
@@ -364,5 +405,6 @@
 
 </body>
 </html>
+
 
 

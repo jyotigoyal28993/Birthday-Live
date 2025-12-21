@@ -12,6 +12,32 @@
       overflow-x: hidden;
     }
 
+    /* Unlock Section */
+    #unlock-section {
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: #f8f0f8;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #unlock-section input {
+      padding: 8px 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 60%;
+      margin-right: 10px;
+    }
+    #unlock-section button {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      background-color: #ff99cc;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     /* Celebration section */
     #main-message {
       font-size: 40px;
@@ -127,9 +153,20 @@
 </head>
 <body>
 
+<!-- Unlock Section -->
+<div id="unlock-section">
+  <h2>🎂 Birthday Dashboard Locked</h2>
+  <p>Enter password to unlock insights:</p>
+  <input type="text" id="password-input" placeholder="Password"/>
+  <button onclick="checkPassword()">Unlock</button>
+  <p id="unlock-error" style="color:red; display:none;">Wrong password!</p>
+</div>
+
+<!-- Celebration -->
 <div id="main-message"></div>
 <div id="sub-message"></div>
 
+<!-- Dashboard -->
 <div id="dashboard" style="display:none;">
 
   <!-- Behavior Cards -->
@@ -198,24 +235,25 @@
 </div>
 
 <script>
-  // PREVIEW MODE
-  const today = new Date(2025, 11, 25); // Dec 25
+  const today = new Date(2025,11,25); // Dec 25
+
   const mainMessage = document.getElementById("main-message");
   const subMessage = document.getElementById("sub-message");
   const dashboard = document.getElementById("dashboard");
+  const unlockSection = document.getElementById("unlock-section");
 
   function launchRibbons() {
     const colors = ["#F6C1CC","#C3DDFD","#D5F5E3","#FDEBD0","#E8DAEF"];
     const ribbonCount = 60;
-    for (let i = 0; i < ribbonCount; i++) {
+    for (let i=0;i<ribbonCount;i++){
       const ribbon = document.createElement("div");
-      ribbon.className = "ribbon";
+      ribbon.className="ribbon";
       ribbon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-      ribbon.style.left = Math.random()*100 + "vw";
+      ribbon.style.left=Math.random()*100 + "vw";
       ribbon.style.animationDuration = 2 + Math.random()*2 + "s";
       ribbon.style.animationDelay = Math.random()*0.5 + "s";
       document.body.appendChild(ribbon);
-      setTimeout(()=>{ ribbon.remove(); }, 4000);
+      setTimeout(()=>{ribbon.remove();},4000);
     }
   }
 
@@ -230,27 +268,40 @@
     document.getElementById("llm-extra").innerText = random;
   }
 
-  const isBirthday = today.getDate()===25 && today.getMonth()===11;
-  if(isBirthday){
-    mainMessage.innerText = "Yes!";
-    subMessage.innerText = "The system ran quietly all year. Today, it’s ready to reveal what makes you… you.";
-    launchRibbons();
-    dashboard.style.display = "block";
-
-    // Animate behavior cards sequentially
+  function animateCards(){
     const cards = document.querySelectorAll(".behavior-card");
-    cards.forEach((card, index) => {
+    cards.forEach((card,index)=>{
       setTimeout(()=>{
         card.classList.add("show");
         const bar = card.querySelector(".behavior-bar");
-        // Animate bar width
         const percent = parseInt(card.querySelector(".behavior-title").innerText.match(/\d+/)[0]);
         bar.style.width = percent + "%";
-      }, index*500);
+      },index*500);
     });
-  } else {
-    mainMessage.innerText = "Nope.";
   }
+
+  function checkPassword(){
+    const input = document.getElementById("password-input").value.toLowerCase();
+    const error = document.getElementById("unlock-error");
+    const correctPassword = "december2022"; // example
+
+    if(input === correctPassword){
+      unlockSection.style.display="none";
+      mainMessage.innerText = "Yes!";
+      subMessage.innerText = "The system ran quietly all year. Today, it’s ready to reveal what makes you… you.";
+      dashboard.style.display="block";
+      launchRibbons();
+      animateCards();
+    } else {
+      error.style.display="block";
+    }
+  }
+
+  // Optional: if not birthday, show "Nope"
+  if(!(today.getDate()===25 && today.getMonth()===11)){
+    unlockSection.innerHTML="<h2>Nope.</h2>";
+  }
+
 </script>
 
 </body>

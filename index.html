@@ -242,10 +242,15 @@ for (let i = 0; i < 20; i++) {
 }
 
 /* ---------- NAV ---------- */
+const landing = document.getElementById("landing");
+const unlock = document.getElementById("unlock");
+const dashboard = document.getElementById("dashboard");
+
 function showUnlock() {
   landing.classList.add("hidden");
   unlock.classList.remove("hidden");
 }
+
 
 function unlock() {
   const val = document.getElementById("password").value;
@@ -256,7 +261,9 @@ function unlock() {
     alert("Incorrect password");
   }
 }
+
 </script>
 
 </body>
 </html>
+

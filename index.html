@@ -23,20 +23,24 @@
     em {
       color: #555;
     }
-    .confetti {
+    .ribbon {
   position: fixed;
-  top: -10px;
-  font-size: 24px;
-  animation: fall 2s linear forwards;
+  top: -20px;
+  width: 6px;
+  height: 18px;
+  border-radius: 3px;
+  opacity: 0.9;
+  animation: ribbonFall linear forwards;
   z-index: 9999;
 }
 
-@keyframes fall {
+@keyframes ribbonFall {
   to {
-    transform: translateY(110vh);
+    transform: translateY(110vh) rotate(360deg);
     opacity: 0;
   }
 }
+
 
   </style>
 </head>
@@ -136,29 +140,43 @@ if (isBirthday) {
   }
 
 function launchConfetti() {
-  const confettiCount = 40;
+  const colors = [
+    "#F6C1CC", // soft pink
+    "#C3DDFD", // pastel blue
+    "#D5F5E3", // mint
+    "#FDEBD0", // peach
+    "#E8DAEF"  // lavender
+  ];
 
-  for (let i = 0; i < confettiCount; i++) {
-    const confetti = document.createElement("div");
-    confetti.className = "confetti";
-    confetti.innerText = "🎉";
+  const ribbonCount = 35;
 
-    confetti.style.left = Math.random() * 100 + "vw";
-    confetti.style.animationDuration = 1.5 + Math.random() * 1.5 + "s";
+  for (let i = 0; i < ribbonCount; i++) {
+    const ribbon = document.createElement("div");
+    ribbon.className = "ribbon";
 
-    document.body.appendChild(confetti);
+    ribbon.style.left = Math.random() * 100 + "vw";
+    ribbon.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+    ribbon.style.animationDuration =
+      2 + Math.random() * 1.5 + "s";
+    ribbon.style.animationDelay =
+      Math.random() * 0.3 + "s";
+
+    document.body.appendChild(ribbon);
 
     setTimeout(() => {
-      confetti.remove();
-    }, 3000);
+      ribbon.remove();
+    }, 3500);
   }
 }
+
 
 
 </script>
 
 </body>
 </html>
+
 
 
 

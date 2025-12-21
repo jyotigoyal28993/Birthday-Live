@@ -23,23 +23,31 @@
     em {
       color: #555;
     }
-    .ribbon {
+   .ribbon {
   position: fixed;
-  top: -20px;
   width: 6px;
   height: 18px;
   border-radius: 3px;
   opacity: 0.9;
-  animation: ribbonFall linear forwards;
   z-index: 9999;
+  pointer-events: none; /* so ribbons don’t block clicks */
+  animation: fall linear forwards;
 }
 
-@keyframes ribbonFall {
-  to {
-    transform: translateY(110vh) rotate(360deg);
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(90vh) rotate(180deg);
+  }
+  100% {
+    transform: translateY(95vh) rotate(360deg);
     opacity: 0;
   }
 }
+
 
 
   </style>
@@ -122,7 +130,7 @@ if (isBirthday) {
   subMessage.innerText =
     "The system ran quietly all year. Today, it’s ready to share what it noticed.";
   lock.style.display = "block";
-  launchConfetti();
+  launchRibbons();
 
 } else {
   mainMessage.innerText = "Nope.";
@@ -139,43 +147,31 @@ if (isBirthday) {
     }
   }
 
-function launchConfetti() {
-  const colors = [
-    "#F6C1CC", // soft pink
-    "#C3DDFD", // pastel blue
-    "#D5F5E3", // mint
-    "#FDEBD0", // peach
-    "#E8DAEF"  // lavender
-  ];
-
-  const ribbonCount = 35;
+function launchRibbons() {
+  const colors = ["#F6C1CC","#C3DDFD","#D5F5E3","#FDEBD0","#E8DAEF"];
+  const ribbonCount = 60;
 
   for (let i = 0; i < ribbonCount; i++) {
     const ribbon = document.createElement("div");
     ribbon.className = "ribbon";
-
+    ribbon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
     ribbon.style.left = Math.random() * 100 + "vw";
-    ribbon.style.backgroundColor =
-      colors[Math.floor(Math.random() * colors.length)];
-    ribbon.style.animationDuration =
-      2 + Math.random() * 1.5 + "s";
-    ribbon.style.animationDelay =
-      Math.random() * 0.3 + "s";
+    ribbon.style.animationDuration = 2 + Math.random() * 2 + "s";
+    ribbon.style.animationDelay = Math.random() * 0.5 + "s";
 
     document.body.appendChild(ribbon);
 
     setTimeout(() => {
       ribbon.remove();
-    }, 3500);
+    }, 4000);
   }
 }
-
-
 
 </script>
 
 </body>
 </html>
+
 
 
 

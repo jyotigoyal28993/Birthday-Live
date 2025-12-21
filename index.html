@@ -1,85 +1,270 @@
-<!-- Dashboard (shown after correct password) -->
-<div id="dashboard" style="display:none;">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Birthday Dashboard</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(to bottom, #fffaf0, #ffe6f2);
+      overflow-x: hidden;
+    }
 
-  <!-- Celebration heading after unlock -->
-  <div id="main-message" style="text-align:center; font-size:36px; font-weight:700; margin-bottom:10px;">
-    🎉 Birthday Insights Unlocked!
+    /* Landing Page */
+    #landing {
+      text-align: center;
+      display: block;
+    }
+    #landing h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    #landing p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 30px;
+    }
+    #landing button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff99cc;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Unlock Section */
+    #unlock-section {
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: #f8f0f8;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: none;
+    }
+    #unlock-section input {
+      padding: 8px 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 60%;
+      margin-right: 10px;
+    }
+    #unlock-section button {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      background-color: #ff99cc;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #unlock-section p.hint {
+      font-size: 12px;
+      color: #555;
+      margin-top: 8px;
+    }
+    #unlock-section p.error {
+      font-size: 14px;
+      color: red;
+      display: none;
+      margin-top: 8px;
+    }
+
+    /* Celebration Ribbons */
+    .ribbon {
+      position: fixed;
+      top: -20px;
+      width: 6px;
+      height: 18px;
+      border-radius: 3px;
+      opacity: 0.9;
+      z-index: 9999;
+      pointer-events: none;
+      animation: ribbonFall linear forwards;
+    }
+    @keyframes ribbonFall {
+      0% { transform: translateY(0) rotate(0deg) translateX(0); opacity:1; }
+      50% { transform: translateY(50vh) rotate(180deg) translateX(10px);}
+      100% { transform: translateY(95vh) rotate(360deg) translateX(-10px); opacity:0;}
+    }
+
+    /* Dashboard */
+    #dashboard {
+      max-width: 600px;
+      margin: 0 auto;
+      display: none;
+    }
+    #dashboard h2 {
+      text-align: center;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    #dashboard p.subtext {
+      text-align: center;
+      color: #555;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* Behavior Cards */
+    .behavior-card{
+      border-radius:12px;
+      padding:15px 20px;
+      margin-bottom:15px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+      opacity:0;
+      transform:translateY(20px);
+      transition:all 0.6s ease;
+    }
+    .behavior-card.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .behavior-title{ font-weight:600; margin-bottom:8px; }
+    .behavior-bar-container{
+      width:100%;
+      border-radius:8px;
+      height:12px;
+      margin-bottom:5px;
+      overflow:hidden;
+      background-color:#eee;
+    }
+    .behavior-bar{
+      height:12px;
+      border-radius:8px;
+      width:0;
+    }
+    .behavior-comment{ font-size:14px; color:#555; }
+
+    /* Bonus Card */
+    .bonus-card{ border-radius:12px; padding:15px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1); cursor:pointer; background-color:#DDEBF7;}
+    .bonus-card p{ display:none; margin-top:8px; font-style:italic; }
+
+    /* LLM Panel */
+    #llm-panel{ background-color:#D5F5E3; border-radius:12px; padding:15px; margin-top:30px; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    #llm-panel button{ margin-top:10px; padding:6px 12px; border-radius:8px; border:none; background-color:#3CB371; cursor:pointer; font-weight:600; }
+    #llm-extra{ margin-top:8px; font-style:italic; }
+  </style>
+</head>
+<body>
+
+<!-- Landing Page -->
+<div id="landing">
+  <h1>Yes!</h1>
+  <p>🎂 Happy Birthday!<br>Today the system reveals what makes you… you.</p>
+  <button onclick="showUnlock()">Unlock Your Birthday Insights</button>
+</div>
+
+<!-- Unlock Section -->
+<div id="unlock-section">
+  <h2>🎁 Unlock Your Dashboard</h2>
+  <input type="text" id="password-input" placeholder="Password"/>
+  <button onclick="checkPassword()">Unlock</button>
+  <p class="hint">Hint: Month and year you landed in the US, no spaces (example: december2022)</p>
+  <p class="error" id="unlock-error">Wrong password!</p>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard">
+  <h2>🎉 Birthday Insights Unlocked!</h2>
+  <p class="subtext">Explore what makes you… you!</p>
+
+  <div class="behavior-card" style="background-color:#E8F0FE;">
+    <div class="behavior-title">Overthink Index: 87%</div>
+    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#4A90E2;"></div></div>
+    <div class="behavior-comment">Careful decision-making leads to high-quality outcomes.</div>
   </div>
-  <div id="sub-message" style="text-align:center; font-size:16px; color:#555; margin-bottom:30px;">
-    Explore what makes you… you!
+
+  <div class="behavior-card" style="background-color:#E6F7F1;">
+    <div class="behavior-title">Practicality Score: 92%</div>
+    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#3CB371;"></div></div>
+    <div class="behavior-comment">Always finds feasible solutions.</div>
   </div>
 
-  <!-- Dashboard container -->
-  <div style="max-width:600px; margin:0 auto;">
+  <div class="behavior-card" style="background-color:#FFF8E1;">
+    <div class="behavior-title">Attention to Detail: 95%</div>
+    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FFD700;"></div></div>
+    <div class="behavior-comment">Notices patterns most people miss.</div>
+  </div>
 
-    <!-- Behavior Cards -->
-    <div class="behavior-card" style="background-color:#E8F0FE;">
-      <div class="behavior-title">Overthink Index: 87%</div>
-      <div class="behavior-bar-container">
-        <div class="behavior-bar" style="width:0%; background-color:#4A90E2;"></div>
-      </div>
-      <div class="behavior-comment">Careful decision-making leads to high-quality outcomes.</div>
-    </div>
+  <div class="behavior-card" style="background-color:#FDECE6;">
+    <div class="behavior-title">Ambition Quotient: 88%</div>
+    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF8C42;"></div></div>
+    <div class="behavior-comment">Pushes goals just above the usual bar.</div>
+  </div>
 
-    <div class="behavior-card" style="background-color:#E6F7F1;">
-      <div class="behavior-title">Practicality Score: 92%</div>
-      <div class="behavior-bar-container">
-        <div class="behavior-bar" style="width:0%; background-color:#3CB371;"></div>
-      </div>
-      <div class="behavior-comment">Always finds feasible solutions.</div>
-    </div>
+  <div class="behavior-card" style="background-color:#EDE7F6;">
+    <div class="behavior-title">Consideration Factor: 94%</div>
+    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#9B59B6;"></div></div>
+    <div class="behavior-comment">Subtle empathy, big impact.</div>
+  </div>
 
-    <div class="behavior-card" style="background-color:#FFF8E1;">
-      <div class="behavior-title">Attention to Detail: 95%</div>
-      <div class="behavior-bar-container">
-        <div class="behavior-bar" style="width:0%; background-color:#FFD700;"></div>
-      </div>
-      <div class="behavior-comment">Notices patterns most people miss.</div>
-    </div>
+  <div class="behavior-card" style="background-color:#FFF0F5;">
+    <div class="behavior-title">Lovability Metric: 100%</div>
+    <div class="behavior-bar-container"><div class="behavior-bar" style="background-color:#FF69B4;"></div></div>
+    <div class="behavior-comment">Cannot quantify, but confirmed by social feedback.</div>
+  </div>
 
-    <div class="behavior-card" style="background-color:#FDECE6;">
-      <div class="behavior-title">Ambition Quotient: 88%</div>
-      <div class="behavior-bar-container">
-        <div class="behavior-bar" style="width:0%; background-color:#FF8C42;"></div>
-      </div>
-      <div class="behavior-comment">Pushes goals just above the usual bar.</div>
-    </div>
+  <div class="bonus-card" onclick="this.querySelector('p').style.display='block'">
+    🎁 Hidden Personality Insights
+    <p>Softie from inside, loves Indian food, enjoys holiday vibes, secretly playful.</p>
+  </div>
 
-    <div class="behavior-card" style="background-color:#EDE7F6;">
-      <div class="behavior-title">Consideration Factor: 94%</div>
-      <div class="behavior-bar-container">
-        <div class="behavior-bar" style="width:0%; background-color:#9B59B6;"></div>
-      </div>
-      <div class="behavior-comment">Subtle empathy, big impact.</div>
-    </div>
-
-    <div class="behavior-card" style="background-color:#FFF0F5;">
-      <div class="behavior-title">Lovability Metric: 100%</div>
-      <div class="behavior-bar-container">
-        <div class="behavior-bar" style="width:100%; background-color:#FF69B4;"></div>
-      </div>
-      <div class="behavior-comment">Cannot quantify, but confirmed by social feedback.</div>
-    </div>
-
-    <!-- Bonus / Easter Egg -->
-    <div class="bonus-card" onclick="this.querySelector('p').style.display='block'" style="background-color:#DDEBF7;">
-      🎁 Hidden Personality Insights
-      <p>Softie from inside, loves Indian food, enjoys holiday vibes, secretly playful.</p>
-    </div>
-
-    <!-- LLM Panel -->
-    <div id="llm-panel" style="background-color:#D5F5E3; border-radius:12px; padding:15px; margin-top:30px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-      <h3>🎯 Birthday LLM Insight</h3>
-      <p>Based on 365 days of interactions: attention to detail drives success, ambition + empathy is rare, hidden preferences detected.</p>
-      <button onclick="showLLMExtra()">Ask Birthday LLM a Question</button>
-      <p id="llm-extra"></p>
-    </div>
-
+  <div id="llm-panel">
+    <h3>🎯 Birthday LLM Insight</h3>
+    <p>Based on 365 days of interactions: attention to detail drives success, ambition + empathy is rare, hidden preferences detected.</p>
+    <button onclick="showLLMExtra()">Ask Birthday LLM a Question</button>
+    <p id="llm-extra"></p>
   </div>
 </div>
 
 <script>
-  // Animate bars on dashboard unlock
+  // Celebration ribbons on landing page
+  function launchRibbons(){
+    const colors = ["#F6C1CC","#C3DDFD","#D5F5E3","#FDEBD0","#E8DAEF"];
+    const ribbonCount = 60;
+    for(let i=0;i<ribbonCount;i++){
+      const ribbon = document.createElement("div");
+      ribbon.className="ribbon";
+      ribbon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      ribbon.style.left=Math.random()*100 + "vw";
+      ribbon.style.animationDuration = 2 + Math.random()*2 + "s";
+      ribbon.style.animationDelay = Math.random()*0.5 + "s";
+      document.body.appendChild(ribbon);
+      setTimeout(()=>{ribbon.remove();},4000);
+    }
+  }
+  launchRibbons();
+
+  // Show unlock section
+  function showUnlock(){
+    document.getElementById("landing").style.display="none";
+    document.getElementById("unlock-section").style.display="block";
+  }
+
+  // Password check
+  function checkPassword(){
+    const input = document.getElementById("password-input").value.toLowerCase();
+    const error = document.getElementById("unlock-error");
+    const dashboard = document.getElementById("dashboard");
+    const unlockSection = document.getElementById("unlock-section");
+
+    const correctPassword = "december2022"; // example
+    if(input === correctPassword){
+      unlockSection.style.display="none";
+      dashboard.style.display="block";
+      animateCards();
+    } else {
+      error.style.display="block";
+    }
+  }
+
+  // Animate behavior cards
   function animateCards(){
     const cards = document.querySelectorAll(".behavior-card");
     cards.forEach((card,index)=>{
@@ -92,6 +277,7 @@
     });
   }
 
+  // LLM panel interactive button
   function showLLMExtra(){
     const responses = [
       "Your kindness multiplies team success.",
@@ -104,37 +290,5 @@
   }
 </script>
 
-<style>
-  /* Behavior card base styles */
-  .behavior-card{
-    border-radius:12px;
-    padding:15px 20px;
-    margin-bottom:15px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-    opacity:0;
-    transform:translateY(20px);
-    transition:all 0.6s ease;
-  }
-  .behavior-card.show{
-    opacity:1;
-    transform:translateY(0);
-  }
-  .behavior-title{ font-weight:600; margin-bottom:8px; }
-  .behavior-bar-container{
-    width:100%;
-    border-radius:8px;
-    height:12px;
-    margin-bottom:5px;
-    overflow:hidden;
-    background-color:#eee;
-  }
-  .behavior-bar{
-    height:12px;
-    border-radius:8px;
-    width:0;
-  }
-  .behavior-comment{ font-size:14px; color:#555; }
-  .bonus-card{ border-radius:12px; padding:15px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.1); cursor:pointer; }
-  .bonus-card p{ display:none; margin-top:8px; font-style:italic; }
-</style>
-
+</body>
+</html>

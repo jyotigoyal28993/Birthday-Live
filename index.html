@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Birthday Live</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+      line-height: 1.6;
+    }
+    .status {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+    .section {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  const today = new Date();
+  const isLive =
+    today.getDate() === 25 &&
+    today.getMonth() === 11;
+</script>
+
+<div class="status" id="status"></div>
+
+<div class="section">
+  <strong>Product:</strong> Birthday Live<br/>
+  <strong>Release Strategy:</strong> Annual<br/>
+  <strong>Audience Size:</strong> 1<br/>
+  <strong>Launch Confidence:</strong> High
+</div>
+
+<div class="section">
+  <strong>Observed User Behaviors</strong><br/>
+  <em>(Automatically inferred. Read-only.)</em>
+  <ul>
+    <li>Overthinks before committing → Reduces post-launch regret</li>
+    <li>Extremely practical → Optimizes for execution</li>
+    <li>Detail-oriented → Notices edge cases early</li>
+    <li>Ambitious → Sets bars slightly above spec</li>
+    <li>Considerate → Models impact before decisions</li>
+    <li>Extra lovable → Metric unavailable. Known issue.</li>
+  </ul>
+</div>
+
+<div class="section">
+  <em>
+    AI Decision Engine:<br/>
+    After analyzing 365 days of data,<br/>
+    today was selected as the optimal launch date.
+  </em>
+</div>
+
+<script>
+  document.getElementById("status").innerText =
+    isLive
+      ? "🎉 FEATURE LIVE 🎉\n\nBirthday Live is now streaming.\nUptime guarantee: 24 hours."
+      : "Feature Status: OFF\n\nReason:\nDate-based rollout conditions not met.";
+</script>
+
+</body>
+</html>

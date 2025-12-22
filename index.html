@@ -5,9 +5,7 @@
 <title>Is It His Birthday?</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -85,6 +83,7 @@ button:hover {
   padding: 20px;
   border-radius: 14px;
   border: 1px solid #1e293b;
+  position: relative;
 }
 
 .unlock input {
@@ -93,8 +92,8 @@ button:hover {
   margin-top: 12px;
   border-radius: 8px;
   border: 1px solid #334155;
-  background: #020617;
-  color: #e5e7eb;
+  background: #ffffff;
+  color: #020617;
   font-size: 15px;
 }
 
@@ -108,6 +107,17 @@ button:hover {
   margin-top: 10px;
   color: #f87171;
   font-size: 14px;
+}
+
+/* eye icon */
+#togglePassword {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #2563eb;
 }
 
 /* ribbons */
@@ -134,14 +144,11 @@ button:hover {
   <button id="unlockBtn">Unlock Birthday Insights</button>
 
   <div class="unlock" id="unlockPanel">
-    <input
-      type="password"
-      id="password"
-      placeholder="Enter password"
-    />
-    <div class="hint">
-      Hint: Month + year you landed in the US (no spaces)
+    <div style="position:relative;">
+      <input type="password" id="password" placeholder="Enter password" />
+      <span id="togglePassword">👁️</span>
     </div>
+    <div class="hint">Hint: december2050</div>
     <div class="error" id="error"></div>
   </div>
 </div>
@@ -151,10 +158,7 @@ button:hover {
 // const today = new Date();
 const today = new Date(2025, 11, 25); // Dec 25
 
-const isBirthday =
-  today.getDate() === 25 &&
-  today.getMonth() === 11;
-
+const isBirthday = today.getDate() === 25 && today.getMonth() === 11;
 const yesText = document.querySelector(".yes");
 const subText = document.querySelector(".sub");
 
@@ -166,9 +170,9 @@ if (!isBirthday) {
 
 /* ---- CELEBRATION ---- */
 const colors = ["#38bdf8", "#22c55e", "#fbbf24", "#a78bfa"];
-const vignette = document.getElementById("vignette");
+const vignetteEl = document.getElementById("vignette");
 
-function throwRibbon(isHero = false) {
+function throwRibbon(isHero=false) {
   const ribbon = document.createElement("div");
   ribbon.className = "confetti";
 
@@ -190,13 +194,11 @@ function throwRibbon(isHero = false) {
   ribbon.animate(
     [
       { transform: "translateY(-40px) translateX(0) rotate(0deg)" },
-      {
-        transform: `translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)`
-      }
+      { transform: `translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)` }
     ],
     {
       duration: isHero ? 2600 : 1900 + Math.random() * 500,
-      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      easing: "cubic-bezier(0.16,1,0.3,1)",
       fill: "forwards"
     }
   );
@@ -205,7 +207,7 @@ function throwRibbon(isHero = false) {
 }
 
 function celebrate() {
-  vignette.style.opacity = "1";
+  vignetteEl.style.opacity = "1";
 
   const start = Date.now();
   const duration = 700;
@@ -213,20 +215,15 @@ function celebrate() {
   setTimeout(() => throwRibbon(true), 120);
 
   const interval = setInterval(() => {
-    for (let i = 0; i < 4; i++) {
-      throwRibbon(false);
-    }
-
-    if (Date.now() - start > duration) {
+    for (let i=0;i<4;i++) throwRibbon(false);
+    if (Date.now()-start>duration) {
       clearInterval(interval);
-      setTimeout(() => (vignette.style.opacity = "0"), 900);
+      setTimeout(()=>vignetteEl.style.opacity="0",900);
     }
-  }, 90);
+  },90);
 }
 
-if (isBirthday) {
-  celebrate();
-}
+if(isBirthday) celebrate();
 
 /* ---- UNLOCK LOGIC ---- */
 const unlockBtn = document.getElementById("unlockBtn");
@@ -239,14 +236,21 @@ unlockBtn.onclick = () => {
   unlockBtn.style.display = "none";
 };
 
+/* toggle password eye */
+const toggle = document.getElementById("togglePassword");
+toggle.addEventListener("click", ()=>{
+  passwordInput.type = passwordInput.type==="password"?"text":"password";
+});
+
 passwordInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    if (passwordInput.value.toLowerCase() === "december2050") {
-      error.style.color = "#22c55e";
-      error.innerText = "Unlocked. Insights loading…";
+  if(e.key==="Enter"){
+    if(passwordInput.value.toLowerCase()==="december2022"){
+      error.style.color="#22c55e";
+      error.innerText="Unlocked. Insights loading…";
       // next step: dashboard
-    } else {
-      error.innerText = "Incorrect password.";
+    }else{
+      error.style.color="#f87171";
+      error.innerText="Incorrect password.";
     }
   }
 });

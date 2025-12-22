@@ -17,7 +17,7 @@ body {
   overflow: hidden;
 }
 
-/* vignette for celebration */
+/* vignette */
 .vignette {
   position: fixed;
   inset: 0;
@@ -28,7 +28,6 @@ body {
   z-index: 1;
 }
 
-/* container */
 .container {
   text-align: center;
   z-index: 2;
@@ -37,10 +36,9 @@ body {
   padding: 20px;
 }
 
-.yes { font-size: 96px; font-weight: 800; line-height: 1; }
-.sub { margin-top:12px; font-size: 22px; display:flex; align-items:center; justify-content:center; gap:8px; opacity:0.9; }
+.yes { font-size: 96px; font-weight: 800; }
+.sub { margin-top:12px; font-size: 22px; display:flex; justify-content:center; gap:8px; opacity:0.9; }
 
-/* unlock button */
 button {
   margin-top:28px;
   background:#2563eb;
@@ -53,7 +51,6 @@ button {
 }
 button:hover { background:#1d4ed8; }
 
-/* unlock panel (restored to original size, no eye icon) */
 .unlock {
   display:none;
   margin-top:30px;
@@ -61,7 +58,7 @@ button:hover { background:#1d4ed8; }
   padding:20px;
   border-radius:14px;
   border:1px solid #1e293b;
-  width:280px; /* fixed size like before */
+  width:280px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -72,7 +69,6 @@ button:hover { background:#1d4ed8; }
   border:1px solid #334155;
   background:#ffffff;
   color:#020617;
-  font-size:15px;
 }
 .hint { margin-top:10px; font-size:13px; opacity:0.6; }
 .error { margin-top:10px; font-size:14px; }
@@ -85,18 +81,42 @@ button:hover { background:#1d4ed8; }
   height:18px;
   pointer-events:none;
   border-radius:2px;
-  opacity:0.95;
 }
 
-/* --- DASHBOARD STYLES ONLY --- */
+/* ---------- DASHBOARD ---------- */
+
 .dashboard-header {
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  margin-bottom:24px;
+  align-items:flex-start;
+  margin-bottom:30px;
 }
-.dashboard-header h1 { font-size:32px; font-weight:700; }
-.dashboard-header .date { font-size:16px; opacity:0.7; }
+
+.header-left h1 {
+  font-size:32px;
+  font-weight:700;
+}
+
+.system {
+  margin-top:6px;
+  font-size:14px;
+  opacity:0.7;
+}
+
+.bug {
+  margin-top:6px;
+  display:inline-block;
+  background:rgba(251,191,36,0.15);
+  color:#fbbf24;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:13px;
+}
+
+.date {
+  font-size:16px;
+  opacity:0.7;
+}
 
 .cards {
   display:flex;
@@ -107,31 +127,52 @@ button:hover { background:#1d4ed8; }
 
 .card {
   background:#111827;
-  border-radius:12px;
-  padding:20px;
-  flex:1 1 250px;
-  max-width:300px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  border-radius:14px;
+  padding:22px;
+  width:260px;
+  box-shadow:0 10px 24px rgba(0,0,0,0.35);
+  opacity:0;
+  transform: translateY(14px);
+  animation: cardIn 0.6s ease forwards;
+}
+
+.card:nth-child(1){ animation-delay:0.2s; }
+.card:nth-child(2){ animation-delay:0.4s; }
+.card:nth-child(3){ animation-delay:0.6s; }
+.card:nth-child(4){ animation-delay:0.8s; }
+
+@keyframes cardIn {
+  to { opacity:1; transform:translateY(0); }
 }
 
 .card h2 {
   font-size:18px;
+  margin-bottom:6px;
+}
+
+.card p {
+  font-size:14px;
+  opacity:0.75;
   margin-bottom:12px;
 }
 
 .progress-bar {
-  height:12px;
+  height:10px;
   background:#334155;
   border-radius:6px;
   overflow:hidden;
-  margin-bottom:8px;
 }
+
 .progress-fill {
   height:100%;
   border-radius:6px;
+  width:0;
+  animation: fillBar 1s ease forwards;
 }
 
-.softie p { margin-bottom:8px; }
+@keyframes fillBar {
+  to { width: var(--w); }
+}
 </style>
 </head>
 
@@ -140,182 +181,94 @@ button:hover { background:#1d4ed8; }
 <div class="vignette" id="vignette"></div>
 
 <div class="container">
-  <!-- Landing page -->
   <div class="yes">Yes.</div>
   <div class="sub">🎂 Happy Birthday</div>
-
   <button id="unlockBtn">Unlock Birthday Insights</button>
 
-  <!-- Unlock panel (original size, no eye icon) -->
   <div class="unlock" id="unlockPanel">
-      <input type="password" id="password" placeholder="Enter password" />
-      <div class="hint">Hint: december2050</div>
-      <div class="error" id="error"></div>
+    <input type="password" id="password" placeholder="Enter password" />
+    <div class="hint">Hint: Month and year you landed in the US, ex:december2050</div>
+    <div class="error" id="error"></div>
   </div>
 </div>
 
 <script>
-// ---- DATE CHECK ----
 const today = new Date(2025,11,25);
 const isBirthday = today.getDate()===25 && today.getMonth()===11;
 
-const yesText = document.querySelector(".yes");
-const subText = document.querySelector(".sub");
+if(isBirthday){
+  const colors=["#38bdf8","#22c55e","#fbbf24","#a78bfa"];
+  const vignette=document.getElementById("vignette");
 
-if(!isBirthday){
-  yesText.innerText="No.";
-  subText.innerText="";
-  document.getElementById("unlockBtn").style.display="none";
+  function throwRibbon(){
+    const r=document.createElement("div");
+    r.className="confetti";
+    r.style.left=Math.random()*100+"vw";
+    r.style.background=colors[Math.floor(Math.random()*colors.length)];
+    document.body.appendChild(r);
+    r.animate([{transform:"translateY(-40px)"},{transform:`translateY(${innerHeight+200}px)`}],
+      {duration:2000,easing:"cubic-bezier(0.16,1,0.3,1)",fill:"forwards"});
+    setTimeout(()=>r.remove(),2300);
+  }
+
+  vignette.style.opacity="1";
+  for(let i=0;i<30;i++) setTimeout(throwRibbon,i*80);
+  setTimeout(()=>vignette.style.opacity="0",1200);
 }
 
-// ---- Celebration ----
-const colors = ["#38bdf8","#22c55e","#fbbf24","#a78bfa"];
-const vignetteEl = document.getElementById("vignette");
-
-function throwRibbon(isHero=false){
-  const ribbon = document.createElement("div");
-  ribbon.className="confetti";
-  const width = isHero?12:6;
-  const height = isHero?34:18;
-  ribbon.style.width=width+"px";
-  ribbon.style.height=height+"px";
-  ribbon.style.left=Math.random()*100+"vw";
-  ribbon.style.background=colors[Math.floor(Math.random()*colors.length)];
-  document.body.appendChild(ribbon);
-  const fall = window.innerHeight + 200;
-  const drift = (Math.random()-0.5)*500;
-  const rotation = (Math.random()-0.5)*1200;
-  ribbon.animate([{transform:"translateY(-40px) translateX(0) rotate(0deg)"},
-                   {transform:`translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)`}],
-                 {duration:isHero?2600:1900+Math.random()*500,easing:"cubic-bezier(0.16,1,0.3,1)",fill:"forwards"});
-  setTimeout(()=>ribbon.remove(),isHero?2800:2400);
-}
-function celebrate(){
-  vignetteEl.style.opacity="1";
-  const start=Date.now();
-  const duration=700;
-  setTimeout(()=>throwRibbon(true),120);
-  const interval=setInterval(()=>{
-    for(let i=0;i<4;i++) throwRibbon(false);
-    if(Date.now()-start>duration){
-      clearInterval(interval);
-      setTimeout(()=>vignetteEl.style.opacity="0",900);
-    }
-  },90);
-}
-if(isBirthday) celebrate();
-
-// ---- Unlock Logic ----
 const unlockBtn=document.getElementById("unlockBtn");
 const panel=document.getElementById("unlockPanel");
-const passwordInput=document.getElementById("password");
+const password=document.getElementById("password");
 const error=document.getElementById("error");
 
-unlockBtn.onclick=()=>{panel.style.display="block"; unlockBtn.style.display="none";};
+unlockBtn.onclick=()=>{ panel.style.display="block"; unlockBtn.style.display="none"; };
 
-passwordInput.addEventListener("keydown", e=>{
+password.addEventListener("keydown",e=>{
   if(e.key==="Enter"){
-    if(passwordInput.value.toLowerCase()==="december2022"){
-      // Modern Dashboard (flex/grid) AFTER unlock
+    if(password.value.toLowerCase()==="december2022"){
       document.querySelector(".container").innerHTML=`
         <div class="dashboard-header">
-  <h1>🎉 Birthday Dashboard</h1>
-  <div class="date">Dec 25 🎂</div>
-</div>
+          <div class="header-left">
+            <h1>🎉 Birthday Dashboard</h1>
+            <div class="system">System initializing…</div>
+            <div class="bug">⚠ Bug #042: Lovable · Status: Open · Won’t Fix</div>
+          </div>
+          <div class="date">Dec 25 🎂</div>
+        </div>
 
-<div class="cards">
+        <div class="cards">
+          <div class="card">
+            <h2>Overthinking</h2>
+            <p>Cognitive loops reduced vs last year</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:65%; background:#22c55e;"></div>
+            </div>
+          </div>
 
-  <!-- Overthinking -->
-  <div class="card">
-    <h2>Overthinking</h2>
+          <div class="card">
+            <h2>Ambitious</h2>
+            <p>Long-horizon goal intensity</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:88%; background:#2563eb;"></div>
+            </div>
+          </div>
 
-    <div style="display:flex; justify-content:space-between;">
-      <span>Status</span>
-      <strong>↓ Improving</strong>
-    </div>
+          <div class="card">
+            <h2>Considerate</h2>
+            <p>Stakeholder impact awareness</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:82%; background:#a78bfa;"></div>
+            </div>
+          </div>
 
-    <div class="progress-bar">
-      <div class="progress-fill" style="width:62%; background:#22c55e;"></div>
-    </div>
-
-    <p style="font-size:13px; opacity:0.75;">
-      Decisions land faster this year without sacrificing outcome quality.
-    </p>
-  </div>
-
-  <!-- Ambition -->
-  <div class="card">
-    <h2>Ambition</h2>
-
-    <div style="display:flex; justify-content:space-between;">
-      <span>Index</span>
-      <strong>88%</strong>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill" style="width:88%; background:#2563eb;"></div>
-    </div>
-
-    <p style="font-size:13px; opacity:0.75;">
-      Consistently sets bars slightly higher than required.
-    </p>
-  </div>
-
-  <!-- Consideration -->
-  <div class="card">
-    <h2>Consideration</h2>
-
-    <div style="display:flex; justify-content:space-between;">
-      <span>System Impact</span>
-      <strong>High</strong>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill" style="width:90%; background:#a78bfa;"></div>
-    </div>
-
-    <p style="font-size:13px; opacity:0.75;">
-      Accounts for people and downstream impact before acting.
-    </p>
-  </div>
-
-  <!-- Detail Oriented -->
-  <div class="card">
-    <h2>Detail Sensitivity</h2>
-
-    <div style="display:flex; justify-content:space-between;">
-      <span>Detection Rate</span>
-      <strong>92%</strong>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-fill" style="width:92%; background:#fbbf24;"></div>
-    </div>
-
-    <p style="font-size:13px; opacity:0.75;">
-      Notices second-order effects most systems overlook.
-    </p>
-  </div>
-
-  <!-- Lovable Bug -->
-  <div class="card">
-    <h2>🐞 Known Issue</h2>
-
-    <p style="font-size:14px;">
-      <strong>Unexpected trait detected:</strong> Lovable
-    </p>
-
-    <p style="font-size:13px; opacity:0.75;">
-      Emotional impact exceeds model capabilities.
-      This signal appears consistently and cannot be suppressed.
-    </p>
-
-    <p style="font-size:13px; opacity:0.6; margin-top:8px;">
-      Status: Open &nbsp;|&nbsp; Priority: P0 &nbsp;|&nbsp; Resolution: Won’t Fix
-    </p>
-  </div>
-
-</div>
+          <div class="card">
+            <h2>Detail-oriented</h2>
+            <p>Execution accuracy bias</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:90%; background:#fbbf24;"></div>
+            </div>
+          </div>
+        </div>
       `;
     } else {
       error.style.color="#f87171";
@@ -327,4 +280,3 @@ passwordInput.addEventListener("keydown", e=>{
 
 </body>
 </html>
-

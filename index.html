@@ -5,21 +5,19 @@
 <title>Is It His Birthday?</title>
 
 <style>
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin:0; padding:0; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
 
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #0f172a;
-  height: 100vh;
+  color: #e5e7eb;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  color: #e5e7eb;
 }
 
-/* vignette for celebration */
+/* Vignette for celebration */
 .vignette {
   position: fixed;
   inset: 0;
@@ -30,56 +28,41 @@ body {
   z-index: 1;
 }
 
-/* container */
+/* Landing / Container */
 .container {
   text-align: center;
   z-index: 2;
   width: 100%;
-  max-width: 420px;
+  max-width: 900px;
   padding: 20px;
 }
 
-.yes {
-  font-size: 96px;
-  font-weight: 800;
-  line-height: 1;
-}
+.yes { font-size: 96px; font-weight: 800; line-height: 1; }
+.sub { margin-top:12px; font-size: 22px; display:flex; align-items:center; justify-content:center; gap:8px; opacity:0.9; }
 
-.sub {
-  margin-top: 12px;
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  opacity: 0.9;
-}
-
-/* unlock button */
+/* Unlock Button */
 button {
-  margin-top: 28px;
-  background: #2563eb;
-  border: none;
-  color: white;
-  padding: 14px 20px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
+  margin-top:28px;
+  background:#2563eb;
+  border:none;
+  color:white;
+  padding:14px 20px;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
 }
+button:hover { background:#1d4ed8; }
 
-button:hover { background: #1d4ed8; }
-
-/* unlock panel */
+/* Unlock panel */
 .unlock {
-  display: none;
-  margin-top: 30px;
-  background: #020617;
-  padding: 20px;
-  border-radius: 14px;
-  border: 1px solid #1e293b;
+  display:none;
+  margin-top:30px;
+  background:#020617;
+  padding:20px;
+  border-radius:14px;
+  border:1px solid #1e293b;
   position: relative;
 }
-
 .unlock input {
   width: 100%;
   padding: 12px;
@@ -90,40 +73,76 @@ button:hover { background: #1d4ed8; }
   color: #020617;
   font-size: 15px;
 }
+.hint { margin-top:10px; font-size:13px; opacity:0.6; }
+.error { margin-top:10px; font-size:14px; }
 
-.hint {
-  margin-top: 10px;
-  font-size: 13px;
-  opacity: 0.6;
-}
-
-.error {
-  margin-top: 10px;
-  color: #f87171;
-  font-size: 14px;
-}
-
-/* eye icon */
+/* Eye icon */
 #togglePassword {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-  color: #2563eb;
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  font-size:18px;
+  color:#2563eb;
 }
 
-/* ribbons */
+/* Ribbons */
 .confetti {
   position: fixed;
   top: -40px;
-  width: 6px;
-  height: 18px;
-  pointer-events: none;
-  border-radius: 2px;
-  opacity: 0.95;
+  width:6px;
+  height:18px;
+  pointer-events:none;
+  border-radius:2px;
+  opacity:0.95;
 }
+
+/* Dashboard styles */
+.dashboard-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+}
+.dashboard-header h1 { font-size:32px; font-weight:700; }
+.dashboard-header .date { font-size:16px; opacity:0.7; }
+
+.cards {
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.card {
+  background:#111827;
+  border-radius:12px;
+  padding:20px;
+  flex:1 1 250px;
+  max-width:300px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+
+.card h2 {
+  font-size:18px;
+  margin-bottom:12px;
+}
+
+.progress-bar {
+  height:12px;
+  background:#334155;
+  border-radius:6px;
+  overflow:hidden;
+  margin-bottom:8px;
+}
+.progress-fill {
+  height:100%;
+  border-radius:6px;
+}
+
+/* Softie card */
+.softie p { margin-bottom:8px; }
 </style>
 </head>
 
@@ -148,141 +167,97 @@ button:hover { background: #1d4ed8; }
 </div>
 
 <script>
-/* ---- DATE CHECK (preview ON) ---- */
-// const today = new Date();
-const today = new Date(2025, 11, 25); // Dec 25
-const isBirthday = today.getDate() === 25 && today.getMonth() === 11;
+// ---- DATE CHECK ----
+const today = new Date(2025,11,25);
+const isBirthday = today.getDate()===25 && today.getMonth()===11;
 
 const yesText = document.querySelector(".yes");
 const subText = document.querySelector(".sub");
 
-if (!isBirthday) {
-  yesText.innerText = "No.";
-  subText.innerText = "";
-  document.getElementById("unlockBtn").style.display = "none";
+if(!isBirthday){
+  yesText.innerText="No.";
+  subText.innerText="";
+  document.getElementById("unlockBtn").style.display="none";
 }
 
-/* ---- CELEBRATION ---- */
-const colors = ["#38bdf8", "#22c55e", "#fbbf24", "#a78bfa"];
+// ---- Celebration ----
+const colors = ["#38bdf8","#22c55e","#fbbf24","#a78bfa"];
 const vignetteEl = document.getElementById("vignette");
 
-function throwRibbon(isHero=false) {
+function throwRibbon(isHero=false){
   const ribbon = document.createElement("div");
-  ribbon.className = "confetti";
-
-  const width = isHero ? 12 : 6;
-  const height = isHero ? 34 : 18;
-
-  ribbon.style.width = width + "px";
-  ribbon.style.height = height + "px";
-  ribbon.style.left = Math.random() * 100 + "vw";
-  ribbon.style.background =
-    colors[Math.floor(Math.random() * colors.length)];
-
+  ribbon.className="confetti";
+  const width = isHero?12:6;
+  const height = isHero?34:18;
+  ribbon.style.width=width+"px";
+  ribbon.style.height=height+"px";
+  ribbon.style.left=Math.random()*100+"vw";
+  ribbon.style.background=colors[Math.floor(Math.random()*colors.length)];
   document.body.appendChild(ribbon);
-
   const fall = window.innerHeight + 200;
-  const drift = (Math.random() - 0.5) * 500;
-  const rotation = (Math.random() - 0.5) * 1200;
-
-  ribbon.animate(
-    [
-      { transform: "translateY(-40px) translateX(0) rotate(0deg)" },
-      { transform: `translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)` }
-    ],
-    {
-      duration: isHero ? 2600 : 1900 + Math.random() * 500,
-      easing: "cubic-bezier(0.16,1,0.3,1)",
-      fill: "forwards"
-    }
-  );
-
-  setTimeout(() => ribbon.remove(), isHero ? 2800 : 2400);
+  const drift = (Math.random()-0.5)*500;
+  const rotation = (Math.random()-0.5)*1200;
+  ribbon.animate([{transform:"translateY(-40px) translateX(0) rotate(0deg)"},
+                   {transform:`translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)`}],
+                 {duration:isHero?2600:1900+Math.random()*500,easing:"cubic-bezier(0.16,1,0.3,1)",fill:"forwards"});
+  setTimeout(()=>ribbon.remove(),isHero?2800:2400);
 }
-
-function celebrate() {
-  vignetteEl.style.opacity = "1";
-
-  const start = Date.now();
-  const duration = 700;
-
-  setTimeout(() => throwRibbon(true), 120);
-
-  const interval = setInterval(() => {
-    for (let i=0;i<4;i++) throwRibbon(false);
-    if (Date.now()-start>duration) {
+function celebrate(){
+  vignetteEl.style.opacity="1";
+  const start=Date.now();
+  const duration=700;
+  setTimeout(()=>throwRibbon(true),120);
+  const interval=setInterval(()=>{
+    for(let i=0;i<4;i++) throwRibbon(false);
+    if(Date.now()-start>duration){
       clearInterval(interval);
       setTimeout(()=>vignetteEl.style.opacity="0",900);
     }
   },90);
 }
-
 if(isBirthday) celebrate();
 
-/* ---- UNLOCK LOGIC ---- */
-const unlockBtn = document.getElementById("unlockBtn");
-const panel = document.getElementById("unlockPanel");
-const passwordInput = document.getElementById("password");
-const error = document.getElementById("error");
+// ---- Unlock Logic ----
+const unlockBtn=document.getElementById("unlockBtn");
+const panel=document.getElementById("unlockPanel");
+const passwordInput=document.getElementById("password");
+const error=document.getElementById("error");
 
-unlockBtn.onclick = () => {
-  panel.style.display = "block";
-  unlockBtn.style.display = "none";
-};
+unlockBtn.onclick=()=>{panel.style.display="block"; unlockBtn.style.display="none";};
 
-/* toggle password eye */
-const toggle = document.getElementById("togglePassword");
-toggle.addEventListener("click", ()=>{
+document.getElementById("togglePassword").addEventListener("click",()=>{
   passwordInput.type = passwordInput.type==="password"?"text":"password";
 });
 
-passwordInput.addEventListener("keydown", e => {
+passwordInput.addEventListener("keydown", e=>{
   if(e.key==="Enter"){
     if(passwordInput.value.toLowerCase()==="december2022"){
-      // Replace container content with dashboard
-      document.querySelector(".container").innerHTML = `
-        <div class="yes">🎉 Dashboard</div>
-        <div class="sub">Personal Birthday Insights</div>
-
-        <div class="unlock" style="display:block; margin-top:20px;">
-
-          <div class="section" style="background:#111827; padding:16px; border-radius:12px; margin-bottom:16px;">
-            <strong>Observed Behaviors</strong>
-            <p>• Overthinks decisions before committing → High-quality outcomes</p>
-            <p>• Extremely practical → Optimizes feasibility over hype</p>
-            <p>• Detail-oriented → Notices what most systems ignore</p>
-            <p>• Ambitious → Sets bars slightly higher than required</p>
-            <p>• Highly considerate → Accounts for impact on others</p>
-            <p>• Extra lovable → System unable to quantify</p>
-          </div>
-
-          <div class="section" style="background:#111827; padding:16px; border-radius:12px; margin-bottom:16px;">
-            <strong>Behavior Percentages</strong>
-            <div style="margin-top:8px;">Overthinking: <span style="font-weight:700;">80%</span></div>
-            <div style="height:12px; background:#334155; border-radius:6px; overflow:hidden; margin-bottom:6px;">
-              <div style="width:80%; background:#22c55e; height:100%;"></div>
-            </div>
-
+      // Replace container with modern dashboard
+      document.querySelector(".container").innerHTML=`
+        <div class="dashboard-header">
+          <h1>🎉 Birthday Dashboard</h1>
+          <div class="date">Dec 25 🎂</div>
+        </div>
+        <div class="cards">
+          <div class="card">
+            <h2>Behavior Insights</h2>
+            <div>Overthinking: <span style="font-weight:700;">80%</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#22c55e;"></div></div>
             <div>Practical: <span style="font-weight:700;">90%</span></div>
-            <div style="height:12px; background:#334155; border-radius:6px; overflow:hidden; margin-bottom:6px;">
-              <div style="width:90%; background:#2563eb; height:100%;"></div>
-            </div>
-
+            <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#2563eb;"></div></div>
             <div>Ambitious: <span style="font-weight:700;">85%</span></div>
-            <div style="height:12px; background:#334155; border-radius:6px; overflow:hidden; margin-bottom:6px;">
-              <div style="width:85%; background:#fbbf24; height:100%;"></div>
-            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%; background:#fbbf24;"></div></div>
           </div>
 
-          <div class="section" style="background:#111827; padding:16px; border-radius:12px; margin-bottom:16px;">
-            <strong>Bonus: Softie Inside 💖</strong>
+          <div class="card softie">
+            <h2>Bonus: Softie Inside 💖</h2>
             <p>Even with a hard shell, he’s extremely caring and considerate.</p>
-            <p>Loves Indian food 🍛, misses India 🇮🇳, enjoys holiday season vibes 🎄</p>
-            <p>Likes to write racing thoughts 📝 — your brain is faster than your keyboard!</p>
+            <p>Loves Indian food 🍛, misses India 🇮🇳, enjoys holiday vibes 🎄</p>
+            <p>Likes to write racing thoughts 📝 — brain faster than keyboard!</p>
           </div>
 
-          <div class="section" style="background:#111827; padding:16px; border-radius:12px;">
-            <strong>LLM Insights 🤖</strong>
+          <div class="card">
+            <h2>LLM Insights 🤖</h2>
             <p>After analyzing 365 days of data, today was chosen as optimal launch date.</p>
             <p>System detects: high-quality outcomes correlate with careful reflection and attention to detail.</p>
           </div>

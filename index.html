@@ -17,7 +17,7 @@ body {
   overflow: hidden;
 }
 
-/* Vignette for celebration */
+/* vignette for celebration */
 .vignette {
   position: fixed;
   inset: 0;
@@ -28,7 +28,7 @@ body {
   z-index: 1;
 }
 
-/* Landing / Container */
+/* container */
 .container {
   text-align: center;
   z-index: 2;
@@ -40,7 +40,7 @@ body {
 .yes { font-size: 96px; font-weight: 800; line-height: 1; }
 .sub { margin-top:12px; font-size: 22px; display:flex; align-items:center; justify-content:center; gap:8px; opacity:0.9; }
 
-/* Unlock Button */
+/* unlock button */
 button {
   margin-top:28px;
   background:#2563eb;
@@ -53,7 +53,7 @@ button {
 }
 button:hover { background:#1d4ed8; }
 
-/* Unlock panel */
+/* unlock panel (keep layout intact) */
 .unlock {
   display:none;
   margin-top:30px;
@@ -76,7 +76,7 @@ button:hover { background:#1d4ed8; }
 .hint { margin-top:10px; font-size:13px; opacity:0.6; }
 .error { margin-top:10px; font-size:14px; }
 
-/* Eye icon */
+/* eye icon */
 #togglePassword {
   position:absolute;
   right:14px;
@@ -87,7 +87,7 @@ button:hover { background:#1d4ed8; }
   color:#2563eb;
 }
 
-/* Ribbons */
+/* ribbons */
 .confetti {
   position: fixed;
   top: -40px;
@@ -98,7 +98,7 @@ button:hover { background:#1d4ed8; }
   opacity:0.95;
 }
 
-/* Dashboard styles */
+/* --- DASHBOARD STYLES --- */
 .dashboard-header {
   display:flex;
   justify-content:space-between;
@@ -141,7 +141,6 @@ button:hover { background:#1d4ed8; }
   border-radius:6px;
 }
 
-/* Softie card */
 .softie p { margin-bottom:8px; }
 </style>
 </head>
@@ -156,6 +155,7 @@ button:hover { background:#1d4ed8; }
 
   <button id="unlockBtn">Unlock Birthday Insights</button>
 
+  <!-- unlock panel (layout intact) -->
   <div class="unlock" id="unlockPanel">
     <div style="position:relative;">
       <input type="password" id="password" placeholder="Enter password" />

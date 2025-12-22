@@ -19,16 +19,12 @@ body {
   color: #e5e7eb;
 }
 
-/* vignette */
+/* vignette for celebration */
 .vignette {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(
-    circle at center,
-    rgba(0,0,0,0) 60%,
-    rgba(0,0,0,0.35) 100%
-  );
+  background: radial-gradient(circle at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%);
   opacity: 0;
   transition: opacity 0.8s ease;
   z-index: 1;
@@ -59,7 +55,7 @@ body {
   opacity: 0.9;
 }
 
-/* button */
+/* unlock button */
 button {
   margin-top: 28px;
   background: #2563eb;
@@ -71,9 +67,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background: #1d4ed8;
-}
+button:hover { background: #1d4ed8; }
 
 /* unlock panel */
 .unlock {
@@ -148,7 +142,7 @@ button:hover {
       <input type="password" id="password" placeholder="Enter password" />
       <span id="togglePassword">👁️</span>
     </div>
-    <div class="hint">Hint: month and year you landed in the US (ex:december2050)</div>
+    <div class="hint">Hint: december2050</div>
     <div class="error" id="error"></div>
   </div>
 </div>
@@ -157,8 +151,8 @@ button:hover {
 /* ---- DATE CHECK (preview ON) ---- */
 // const today = new Date();
 const today = new Date(2025, 11, 25); // Dec 25
-
 const isBirthday = today.getDate() === 25 && today.getMonth() === 11;
+
 const yesText = document.querySelector(".yes");
 const subText = document.querySelector(".sub");
 
@@ -245,10 +239,56 @@ toggle.addEventListener("click", ()=>{
 passwordInput.addEventListener("keydown", e => {
   if(e.key==="Enter"){
     if(passwordInput.value.toLowerCase()==="december2022"){
-      error.style.color="#22c55e";
-      error.innerText="Unlocked. Insights loading…";
-      // next step: dashboard
-    }else{
+      // Replace container content with dashboard
+      document.querySelector(".container").innerHTML = `
+        <div class="yes">🎉 Dashboard</div>
+        <div class="sub">Personal Birthday Insights</div>
+
+        <div class="unlock" style="display:block; margin-top:20px;">
+
+          <div class="section" style="background:#111827; padding:16px; border-radius:12px; margin-bottom:16px;">
+            <strong>Observed Behaviors</strong>
+            <p>• Overthinks decisions before committing → High-quality outcomes</p>
+            <p>• Extremely practical → Optimizes feasibility over hype</p>
+            <p>• Detail-oriented → Notices what most systems ignore</p>
+            <p>• Ambitious → Sets bars slightly higher than required</p>
+            <p>• Highly considerate → Accounts for impact on others</p>
+            <p>• Extra lovable → System unable to quantify</p>
+          </div>
+
+          <div class="section" style="background:#111827; padding:16px; border-radius:12px; margin-bottom:16px;">
+            <strong>Behavior Percentages</strong>
+            <div style="margin-top:8px;">Overthinking: <span style="font-weight:700;">80%</span></div>
+            <div style="height:12px; background:#334155; border-radius:6px; overflow:hidden; margin-bottom:6px;">
+              <div style="width:80%; background:#22c55e; height:100%;"></div>
+            </div>
+
+            <div>Practical: <span style="font-weight:700;">90%</span></div>
+            <div style="height:12px; background:#334155; border-radius:6px; overflow:hidden; margin-bottom:6px;">
+              <div style="width:90%; background:#2563eb; height:100%;"></div>
+            </div>
+
+            <div>Ambitious: <span style="font-weight:700;">85%</span></div>
+            <div style="height:12px; background:#334155; border-radius:6px; overflow:hidden; margin-bottom:6px;">
+              <div style="width:85%; background:#fbbf24; height:100%;"></div>
+            </div>
+          </div>
+
+          <div class="section" style="background:#111827; padding:16px; border-radius:12px; margin-bottom:16px;">
+            <strong>Bonus: Softie Inside 💖</strong>
+            <p>Even with a hard shell, he’s extremely caring and considerate.</p>
+            <p>Loves Indian food 🍛, misses India 🇮🇳, enjoys holiday season vibes 🎄</p>
+            <p>Likes to write racing thoughts 📝 — your brain is faster than your keyboard!</p>
+          </div>
+
+          <div class="section" style="background:#111827; padding:16px; border-radius:12px;">
+            <strong>LLM Insights 🤖</strong>
+            <p>After analyzing 365 days of data, today was chosen as optimal launch date.</p>
+            <p>System detects: high-quality outcomes correlate with careful reflection and attention to detail.</p>
+          </div>
+        </div>
+      `;
+    } else {
       error.style.color="#f87171";
       error.innerText="Incorrect password.";
     }
@@ -258,4 +298,3 @@ passwordInput.addEventListener("keydown", e => {
 
 </body>
 </html>
-

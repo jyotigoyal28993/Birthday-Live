@@ -47,12 +47,11 @@ body {
 
 /* ---------- CONFETTI (VERY SUBTLE) ---------- */
 .confetti {
-  position: absolute;
+  position: fixed;
   top: -20px;
   width: 6px;
-  height: 16px;
-  opacity: 0.6;
-  animation: fall 6s linear infinite;
+  height: 18px;
+  opacity: 0.9;
   pointer-events: none;
 }
 
@@ -72,7 +71,8 @@ body {
 </div>
 
 <script>
-/* --- PREVIEW MODE: force Dec 25 --- */
+<script>
+/* --- PREVIEW MODE --- */
 // const today = new Date();
 const today = new Date(2025, 11, 25); // Dec 25
 
@@ -85,17 +85,50 @@ if (!isBirthday) {
   document.querySelector(".sub").innerText = "";
 }
 
-/* --- CONFETTI --- */
+/* --- LINKEDIN-STYLE RIBBON BURST --- */
 const colors = ["#2563eb", "#22c55e", "#f59e0b", "#8b5cf6"];
-for (let i = 0; i < 20; i++) {
-  const c = document.createElement("div");
-  c.className = "confetti";
-  c.style.left = Math.random() * 100 + "vw";
-  c.style.background = colors[Math.floor(Math.random() * colors.length)];
-  c.style.animationDelay = Math.random() * 5 + "s";
-  document.body.appendChild(c);
+
+function launchBurst() {
+  for (let i = 0; i < 30; i++) {
+    const ribbon = document.createElement("div");
+    ribbon.className = "confetti";
+    ribbon.style.left = Math.random() * 100 + "vw";
+    ribbon.style.background =
+      colors[Math.floor(Math.random() * colors.length)];
+
+    document.body.appendChild(ribbon);
+
+    const fallDistance = window.innerHeight + 100;
+    const drift = (Math.random() - 0.5) * 200;
+    const duration = 2500 + Math.random() * 1000;
+
+    ribbon.animate(
+      [
+        { transform: "translateY(0) translateX(0)", opacity: 1 },
+        {
+          transform: `translateY(${fallDistance}px) translateX(${drift}px)`,
+          opacity: 0.9
+        }
+      ],
+      {
+        duration: duration,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)", // fast, celebratory
+        fill: "forwards"
+      }
+    );
+
+    setTimeout(() => ribbon.remove(), duration);
+  }
 }
+
+/* Fire 2–3 bursts like LinkedIn */
+launchBurst();
+setTimeout(launchBurst, 400);
+setTimeout(launchBurst, 800);
+</script>
+
 </script>
 
 </body>
 </html>
+

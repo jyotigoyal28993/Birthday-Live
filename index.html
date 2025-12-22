@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Is It His Birthday?</title>
+
 <style>
 /* ---------- RESET ---------- */
 * { box-sizing: border-box; margin:0; padding:0; }
@@ -10,7 +11,7 @@
 /* ---------- PAGE ---------- */
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #f8fafc;
+  background: #f8fafc;
   min-height: 100vh;
   display:flex;
   justify-content:center;
@@ -22,15 +23,65 @@ body {
 .container {
   text-align:center;
   z-index:2;
+  max-width: 420px;
+  width: 100%;
 }
 
-/* ---------- LANDING PAGE ---------- */
-.yes { font-size:96px; font-weight:700; color:#111; line-height:1; }
-.sub { margin-top:10px; font-size:22px; display:flex; align-items:center; justify-content:center; gap:6px; color:#333; }
-.unlock-section { margin-top:40px; }
-.password-input { padding:10px; font-size:16px; border-radius:6px; border:1px solid #ccc; width:180px; margin-right:8px; }
-.unlock-button { padding:10px 14px; border:none; border-radius:6px; background:#2563eb; color:#fff; cursor:pointer; font-weight:600; }
-.password-hint { margin-top:6px; font-size:14px; color:#555; }
+/* ---------- LANDING ---------- */
+.yes {
+  font-size:96px;
+  font-weight:700;
+  color:#111;
+  line-height:1;
+}
+
+.sub {
+  margin-top:12px;
+  font-size:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  color:#333;
+}
+
+/* ---------- UNLOCK ---------- */
+.unlock-section {
+  margin-top:48px;
+  opacity:0;
+  transform: translateY(10px);
+  transition: all 0.6s ease;
+}
+
+.unlock-section.visible {
+  opacity:1;
+  transform: translateY(0);
+}
+
+.password-input {
+  padding:10px 12px;
+  font-size:16px;
+  border-radius:6px;
+  border:1px solid #cbd5e1;
+  width:180px;
+}
+
+.unlock-button {
+  margin-left:8px;
+  padding:10px 14px;
+  border:none;
+  border-radius:6px;
+  background:#2563eb;
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.password-hint {
+  margin-top:8px;
+  font-size:14px;
+  color:#555;
+}
 
 /* ---------- CONFETTI ---------- */
 .confetti {
@@ -43,156 +94,195 @@ body {
 }
 
 /* ---------- DASHBOARD ---------- */
-.dashboard-header { margin-bottom:20px; }
-.dashboard-header h1 { font-size:32px; }
-.cards { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
-.card { background:#1f2937; color:#f8fafc; padding:20px; border-radius:12px; min-width:280px; max-width:320px; box-shadow:0 4px 12px rgba(0,0,0,0.2); transition: transform 0.2s; }
-.card:hover { transform:scale(1.03); }
-.progress-bar { height:12px; background:#334155; border-radius:6px; overflow:hidden; margin-bottom:10px; }
-.progress-fill { height:100%; border-radius:6px; width:0%; transition:width 1s ease; }
-.metric { font-weight:700; margin-bottom:10px; color:#fbb6ce; }
+.dashboard-header {
+  margin-bottom:24px;
+}
 
-/* ---------- Extra Lovable ---------- */
-.card.extra-lovable .note-container { position: relative; display:flex; justify-content:center; align-items:center; cursor:pointer; margin-top:10px; }
-.card.extra-lovable .envelope { font-size:24px; transition: transform 0.3s; }
-.card.extra-lovable .note {
-  position:absolute;
-  bottom:40px;
-  background:#111827;
+.dashboard-header h1 {
+  font-size:32px;
+}
+
+.cards {
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px;
+  justify-content:center;
+}
+
+.card {
+  background:#1f2937;
   color:#f8fafc;
-  padding:10px 14px;
-  border-radius:10px;
-  opacity:0;
-  transform: scale(0.8);
-  transition: all 0.4s ease;
+  padding:20px;
+  border-radius:14px;
+  min-width:280px;
+  max-width:320px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);
+  transition: transform 0.2s;
+}
+
+.card:hover { transform: translateY(-4px); }
+
+.progress-bar {
+  height:12px;
+  background:#334155;
+  border-radius:6px;
+  overflow:hidden;
+  margin:8px 0 14px;
+}
+
+.progress-fill {
+  height:100%;
+  width:0%;
+  border-radius:6px;
+  transition: width 1s ease;
+}
+
+.metric {
+  font-weight:700;
+  margin-bottom:6px;
+  color:#fbb6ce;
+}
+
+/* ---------- EXTRA LOVABLE ---------- */
+.note-container {
+  position: relative;
+  display:flex;
+  justify-content:center;
+  cursor:pointer;
+  margin-top:12px;
+}
+
+.envelope {
+  font-size:26px;
+  transition: transform 0.3s;
+}
+
+.note {
+  position:absolute;
+  bottom:44px;
+  background:#111827;
+  padding:12px 16px;
+  border-radius:12px;
   width:220px;
+  opacity:0;
+  transform: scale(0.85);
+  transition: all 0.35s ease;
   pointer-events:none;
 }
-.card.extra-lovable .note-container:hover .envelope { transform: rotate(-20deg) translateY(-4px); }
-.card.extra-lovable .note-container:hover .note { opacity:1; transform: scale(1); }
 
-/* ---------- Tooltip ---------- */
-.tooltip { text-decoration:underline dotted; cursor:help; }
+.note-container:hover .envelope {
+  transform: rotate(-15deg) translateY(-4px);
+}
+
+.note-container:hover .note {
+  opacity:1;
+  transform: scale(1);
+}
 </style>
 </head>
+
 <body>
 
 <div class="container">
   <div class="yes">Yes.</div>
   <div class="sub">🎂 Happy Birthday.</div>
 
-  <div class="unlock-section">
-    <input type="password" class="password-input" placeholder="Enter password" id="password">
+  <div class="unlock-section" id="unlock">
+    <input type="password" class="password-input" id="password" placeholder="Enter password">
     <button class="unlock-button" id="unlock-btn">Unlock Birthday Insights</button>
     <div class="password-hint">Hint: december2050</div>
   </div>
 </div>
 
 <script>
-// --------- DATE CHECK ----------
-const today = new Date(2025,11,25); // Dec 25
-const isBirthday = today.getDate()===25 && today.getMonth()===11;
-if(!isBirthday){
-  document.querySelector(".yes").innerText="No.";
-  document.querySelector(".sub").innerText="";
-  document.querySelector(".unlock-section").style.display="none";
-}
-
-// --------- CONFETTI / RIBBONS ----------
+/* ---------- CONFETTI ---------- */
 const colors = ["#38bdf8","#22c55e","#fbbf24","#a78bfa"];
+
 function throwRibbon(isHero=false){
-  const ribbon = document.createElement("div");
-  ribbon.className="confetti";
-  const size = isHero?12:6, height=isHero?34:18;
-  ribbon.style.width=size+"px"; ribbon.style.height=height+"px";
-  ribbon.style.left=Math.random()*100+"vw";
-  ribbon.style.background=colors[Math.floor(Math.random()*colors.length)];
-  document.body.appendChild(ribbon);
-  const fall=window.innerHeight+160, drift=(Math.random()-0.5)*480, rotation=(Math.random()-0.5)*1200;
-  ribbon.animate([{transform:`translateY(-40px) translateX(0) rotate(0deg)`},{transform:`translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)`}], {duration:isHero?2600:1900+Math.random()*500, easing:"cubic-bezier(0.22,1,0.36,1)", fill:"forwards"});
-  setTimeout(()=>ribbon.remove(), isHero?2800:2300);
-}
-function celebrate(){
-  const start=Date.now(), duration=750;
-  setTimeout(()=>throwRibbon(true),120);
-  const interval=setInterval(()=>{
-    for(let i=0;i<4;i++)throwRibbon(false);
-    if(Date.now()-start>duration){clearInterval(interval);}
-  },90);
-}
-celebrate();
+  const r = document.createElement("div");
+  r.className="confetti";
+  r.style.left=Math.random()*100+"vw";
+  r.style.background=colors[Math.floor(Math.random()*colors.length)];
+  r.style.width=isHero?12:6+"px";
+  r.style.height=isHero?34:18+"px";
+  document.body.appendChild(r);
 
-// --------- UNLOCK BUTTON ----------
-document.getElementById("unlock-btn").addEventListener("click",()=>{
-  const val=document.getElementById("password").value.trim();
-  if(val.toLowerCase()==="december2022"){
-    loadDashboard();
-  }else{
-    alert("Incorrect password!");
-  }
-});
+  const fall=window.innerHeight+160;
+  const drift=(Math.random()-0.5)*480;
+  const rotation=(Math.random()-0.5)*1200;
 
-// --------- DASHBOARD FUNCTION ----------
-function loadDashboard(){
-  document.querySelector(".container").innerHTML=`
-  <div class="dashboard-header">
-    <h1>🎉 Birthday Dashboard</h1>
-    <div class="date">Dec 25 🎂</div>
-  </div>
-  <div class="cards">
-    <div class="card">
-      <h2>Behavior Insights</h2>
-      <div>Overthinking: <span style="font-weight:700;">70% ↓</span></div>
-      <div class="progress-bar"><div class="progress-fill" data-width="70" style="width:0%; background:#22c55e;"></div></div>
-      <div>Ambitious: <span style="font-weight:700;">85% ↑</span></div>
-      <div class="progress-bar"><div class="progress-fill" data-width="85" style="width:0%; background:#2563eb;"></div></div>
-      <div>Detail-Oriented: <span style="font-weight:700;">88%</span></div>
-      <div class="progress-bar"><div class="progress-fill" data-width="88" style="width:0%; background:#fbbf24;"></div></div>
-    </div>
-
-    <div class="card softie">
-      <h2>Bonus: Softie Inside 💖</h2>
-      <div class="softie-content" style="opacity:0; transition:opacity 1s ease;">
-        <p>Even with a hard shell, he’s extremely caring and considerate.</p>
-        <p>Loves Indian food 🍛, misses India 🇮🇳, enjoys holiday vibes 🎄</p>
-        <p>Likes to write racing thoughts 📝 — brain faster than keyboard!</p>
-      </div>
-    </div>
-
-    <div class="card extra-lovable">
-      <h2>Extra Lovable 💖</h2>
-      <div class="metric">Maxed Out</div>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width:100%; background: linear-gradient(90deg,#f472b6,#fbb6ce);"></div>
-      </div>
-      <div class="note-container">
-        <div class="envelope">💌</div>
-        <div class="note">Even with a hard shell, overflowing care and love 💖</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>LLM Insights 🤖</h2>
-      <p>After analyzing 365 days of data, today was chosen as optimal launch date.</p>
-      <p class="tooltip" title="System detects: high-quality outcomes correlate with careful reflection and attention to detail.">Hover for AI insight</p>
-    </div>
-  </div>
-  `;
-
-  // Animate behavior progress bars
-  document.querySelectorAll(".progress-fill").forEach(bar=>{
-    const width=bar.dataset.width;
-    let current=0;
-    const interval=setInterval(()=>{
-      if(current>=width) clearInterval(interval);
-      bar.style.width=current+"%";
-      current++;
-    },15);
+  r.animate([
+    { transform:`translateY(-40px)` },
+    { transform:`translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)` }
+  ],{
+    duration:isHero?2600:2000,
+    easing:"cubic-bezier(0.22,1,0.36,1)",
+    fill:"forwards"
   });
 
-  // Fade in softie bonus
-  setTimeout(()=>{ document.querySelector(".softie-content").style.opacity=1; },1000);
+  setTimeout(()=>r.remove(),2800);
+}
+
+function celebrate(){
+  setTimeout(()=>throwRibbon(true),120);
+  const start=Date.now();
+  const interval=setInterval(()=>{
+    for(let i=0;i<4;i++) throwRibbon();
+    if(Date.now()-start>750) clearInterval(interval);
+  },90);
+}
+
+celebrate();
+
+/* ---------- UNLOCK VISIBILITY ---------- */
+setTimeout(()=>{
+  document.getElementById("unlock").classList.add("visible");
+}, 700);
+
+/* ---------- UNLOCK LOGIC ---------- */
+document.getElementById("unlock-btn").onclick = () => {
+  const v = document.getElementById("password").value.trim().toLowerCase();
+  if(v === "december2022"){
+    loadDashboard();
+  } else {
+    alert("Incorrect password");
+  }
+};
+
+/* ---------- DASHBOARD ---------- */
+function loadDashboard(){
+  document.querySelector(".container").innerHTML = `
+    <div class="dashboard-header">
+      <h1>🎉 Birthday Dashboard</h1>
+      <div>Dec 25</div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h2>Behavior Insights</h2>
+        <div>Overthinking ↓</div>
+        <div class="progress-bar"><div class="progress-fill" data="70" style="background:#22c55e"></div></div>
+        <div>Ambitious ↑</div>
+        <div class="progress-bar"><div class="progress-fill" data="85" style="background:#2563eb"></div></div>
+      </div>
+
+      <div class="card">
+        <h2>Extra Lovable 💖</h2>
+        <div class="metric">Overflowing</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%;background:linear-gradient(90deg,#f472b6,#fbb6ce)"></div></div>
+        <div class="note-container">
+          <div class="envelope">💌</div>
+          <div class="note">Overflowing care, always present 💖</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.querySelectorAll(".progress-fill[data]").forEach(b=>{
+    setTimeout(()=>b.style.width=b.getAttribute("data")+"%",200);
+  });
 }
 </script>
+
 </body>
 </html>

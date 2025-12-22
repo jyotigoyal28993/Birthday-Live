@@ -5,7 +5,11 @@
 <title>Birthday Live</title>
 
 <style>
-/* ---------- GLOBAL ---------- */
+/* ---------------- GLOBAL ---------------- */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -26,7 +30,7 @@ button {
   font-size: 14px;
 }
 
-/* ---------- LANDING ---------- */
+/* ---------------- LANDING ---------------- */
 #landing {
   height: 100vh;
   display: flex;
@@ -59,15 +63,16 @@ button {
   margin-top: 40px;
 }
 
-/* ---------- RIBBONS ---------- */
-.ribbon {
+/* ---------------- CONFETTI ---------------- */
+.confetti {
   position: absolute;
-  top: -40px;
+  top: -20px;
   width: 6px;
-  height: 24px;
-  background: linear-gradient(to bottom, #d4af37, #f3e5ab);
-  opacity: 0.7;
-  animation: fall 6s linear infinite;
+  height: 18px;
+  background: linear-gradient(to bottom, #d4af37, #f1e4b3);
+  opacity: 0.8;
+  animation: fall 5s linear infinite;
+  pointer-events: none;
 }
 
 @keyframes fall {
@@ -76,7 +81,7 @@ button {
   }
 }
 
-/* ---------- UNLOCK ---------- */
+/* ---------------- UNLOCK ---------------- */
 #unlock {
   height: 100vh;
   display: flex;
@@ -87,10 +92,10 @@ button {
 .unlock-card {
   background: white;
   padding: 32px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  text-align: center;
   width: 320px;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  text-align: center;
 }
 
 .unlock-card input {
@@ -107,11 +112,10 @@ button {
   color: #666;
 }
 
-/* ---------- DASHBOARD ---------- */
+/* ---------------- DASHBOARD ---------------- */
 #dashboard {
   height: 100vh;
   padding: 40px;
-  box-sizing: border-box;
 }
 
 .dashboard-grid {
@@ -124,7 +128,7 @@ button {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
 }
 
 .card h3 {
@@ -134,24 +138,15 @@ button {
 
 .progress {
   height: 8px;
-  background: #eee;
+  background: #e5e7eb;
   border-radius: 4px;
   overflow: hidden;
   margin-top: 10px;
 }
 
-.progress > div {
+.progress div {
   height: 100%;
   background: #2563eb;
-}
-
-/* ---------- SURPRISE ---------- */
-.surprise {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 12px;
-  opacity: 0.6;
 }
 </style>
 </head>
@@ -163,7 +158,9 @@ button {
   <div class="landing-container">
     <div class="landing-yes">Yes.</div>
     <div class="landing-sub">🎂 Happy Birthday.</div>
-    <button class="landing-btn" onclick="showUnlock()">Unlock birthday insights →</button>
+    <button class="landing-btn" id="unlockBtn">
+      Unlock birthday insights →
+    </button>
   </div>
 </div>
 
@@ -172,9 +169,9 @@ button {
   <div class="unlock-card">
     <strong>Protected Insights</strong>
     <input type="password" id="password" placeholder="Enter password" />
-    <button style="margin-top:16px" onclick="unlock()">Unlock</button>
+    <button style="margin-top:16px" id="submitPassword">Unlock</button>
     <div class="hint">
-      Hint: Month and year you landed in the US (no space)<br/>
+      Hint: Month and year you landed in the US (no space)<br>
       example: december2050
     </div>
   </div>
@@ -182,8 +179,6 @@ button {
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="hidden">
-  <div class="surprise">🎁 Bonus unlocked</div>
-
   <div class="dashboard-grid">
     <div class="card">
       <h3>Practical Thinking</h3>
@@ -202,57 +197,42 @@ button {
 
     <div class="card">
       <h3>Softie (Hidden)</h3>
-      <p>Hard shell. Very soft core.<br/>Rarely visible. Always present.</p>
+      <p>Hard shell. Very soft core.</p>
     </div>
 
     <div class="card">
-      <h3>Indian Food Affinity</h3>
-      <p>Misses home.<br/>Remembers flavors more than places.</p>
+      <h3>Indian Food Love</h3>
+      <p>Misses home in flavors.</p>
     </div>
 
     <div class="card">
       <h3>LLM Curiosity</h3>
-      <p>Sees systems where others see tools.<br/>Future-facing.</p>
+      <p>Sees systems, not tools.</p>
     </div>
   </div>
 </div>
 
 <script>
-/* ---------- DATE CHECK ---------- */
-// Preview mode ON
-const today = new Date(2025, 11, 25);
-
-const isBirthday =
-  today.getDate() === 25 &&
-  today.getMonth() === 11;
-
-if (!isBirthday) {
-  document.querySelector(".landing-yes").innerText = "No.";
-  document.querySelector(".landing-sub").innerText = "";
-  document.querySelector(".landing-btn").style.display = "none";
+/* ---------- CONFETTI ---------- */
+for (let i = 0; i < 25; i++) {
+  const c = document.createElement("div");
+  c.className = "confetti";
+  c.style.left = Math.random() * 100 + "vw";
+  c.style.animationDelay = Math.random() * 3 + "s";
+  document.body.appendChild(c);
 }
 
-/* ---------- RIBBONS ---------- */
-for (let i = 0; i < 20; i++) {
-  const r = document.createElement("div");
-  r.className = "ribbon";
-  r.style.left = Math.random() * 100 + "vw";
-  r.style.animationDelay = Math.random() * 5 + "s";
-  document.body.appendChild(r);
-}
-
-/* ---------- NAV ---------- */
+/* ---------- ELEMENTS ---------- */
 const landing = document.getElementById("landing");
 const unlock = document.getElementById("unlock");
 const dashboard = document.getElementById("dashboard");
 
-function showUnlock() {
+document.getElementById("unlockBtn").onclick = () => {
   landing.classList.add("hidden");
   unlock.classList.remove("hidden");
-}
+};
 
-
-function unlock() {
+document.getElementById("submitPassword").onclick = () => {
   const val = document.getElementById("password").value;
   if (val === "december2050") {
     unlock.classList.add("hidden");
@@ -260,10 +240,8 @@ function unlock() {
   } else {
     alert("Incorrect password");
   }
-}
-
+};
 </script>
 
 </body>
 </html>
-

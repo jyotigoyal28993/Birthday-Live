@@ -72,53 +72,77 @@ body {
 
 <script>
 const colors = ["#38bdf8", "#22c55e", "#fbbf24", "#a78bfa"];
+const vignette = document.getElementById("vignette");
 
-function launchBurst() {
-  for (let i = 0; i < 36; i++) {
-    const ribbon = document.createElement("div");
-    ribbon.className = "confetti";
+function throwRibbon(isHero = false) {
+  const ribbon = document.createElement("div");
+  ribbon.className = "confetti";
 
-    // Start ONLY from top edge
-    ribbon.style.left = Math.random() * 100 + "vw";
-    ribbon.style.background =
-      colors[Math.floor(Math.random() * colors.length)];
+  const size = isHero ? 12 : 6;
+  const height = isHero ? 34 : 18;
 
-    document.body.appendChild(ribbon);
+  ribbon.style.width = size + "px";
+  ribbon.style.height = height + "px";
+  ribbon.style.left = Math.random() * 100 + "vw";
+  ribbon.style.background =
+    colors[Math.floor(Math.random() * colors.length)];
+  ribbon.style.borderRadius = "2px";
 
-    const fall = window.innerHeight + 150;
-    const drift = (Math.random() - 0.5) * 400;
-    const rotation = (Math.random() - 0.5) * 720;
+  document.body.appendChild(ribbon);
 
-    ribbon.animate(
-      [
-        {
-          transform: "translateY(-20px) translateX(0) rotate(0deg)",
-          opacity: 1
-        },
-        {
-          transform: `translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)`,
-          opacity: 0.95
-        }
-      ],
+  const fall = window.innerHeight + 160;
+  const drift = (Math.random() - 0.5) * 480;
+  const curve = (Math.random() - 0.5) * 120;
+  const rotation = (Math.random() - 0.5) * 1200;
+
+  ribbon.animate(
+    [
       {
-        duration: 1800 + Math.random() * 600,
-        easing: "cubic-bezier(0.16, 1, 0.3, 1)", // FAST → slow
-        fill: "forwards"
+        transform: `translateY(-40px) translateX(0) rotate(0deg)`
+      },
+      {
+        transform: `translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)`
       }
-    );
+    ],
+    {
+      duration: isHero ? 2600 : 1900 + Math.random() * 500,
+      easing: "cubic-bezier(0.22, 1, 0.36, 1)", // curved illusion
+      fill: "forwards"
+    }
+  );
 
-    setTimeout(() => ribbon.remove(), 2600);
-  }
+  setTimeout(() => ribbon.remove(), isHero ? 2800 : 2300);
 }
 
-/* Short celebratory sequence */
-launchBurst();
-setTimeout(launchBurst, 300);
-setTimeout(launchBurst, 600);
+/* One organic celebration */
+function celebrate() {
+  vignette.style.opacity = "1";
+
+  const start = Date.now();
+  const duration = 750;
+
+  // Hero ribbon (once)
+  setTimeout(() => throwRibbon(true), 120);
+
+  const interval = setInterval(() => {
+    for (let i = 0; i < 4; i++) {
+      throwRibbon(false);
+    }
+
+    if (Date.now() - start > duration) {
+      clearInterval(interval);
+      setTimeout(() => (vignette.style.opacity = "0"), 900);
+    }
+  }, 90);
+}
+
+celebrate();
 </script>
+
 
 </body>
 </html>
+
 
 
 

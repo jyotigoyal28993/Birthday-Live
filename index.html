@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Birthday Live</title>
 
 <style>
-/* ---------------- GLOBAL ---------------- */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #f8fafc;
+  font-family: system-ui, sans-serif;
+  background: #f8fafc;
   overflow: hidden;
 }
 
-.hidden {
-  display: none;
-}
+/* ---------- COMMON ---------- */
+.hidden { display: none; }
 
 button {
-  cursor: pointer;
+  padding: 10px 18px;
   border-radius: 6px;
   border: 1px solid #ddd;
   background: white;
-  padding: 10px 16px;
-  font-size: 14px;
+  cursor: pointer;
 }
 
-/* ---------------- LANDING ---------------- */
+/* ---------- CONFETTI LAYER ---------- */
+#confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.confetti {
+  position: absolute;
+  top: -20px;
+  width: 8px;
+  height: 14px;
+  opacity: 0.9;
+  animation: fall 6s linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+/* ---------- LANDING ---------- */
 #landing {
+  position: relative;
+  z-index: 1;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
 .landing-container {
   text-align: center;
-  z-index: 2;
 }
 
 .landing-yes {
@@ -52,37 +70,19 @@ button {
 
 .landing-sub {
   font-size: 22px;
-  margin-top: 8px;
+  margin-top: 6px;
   display: flex;
   justify-content: center;
   gap: 6px;
-  color: #333;
 }
 
 .landing-btn {
-  margin-top: 40px;
+  margin-top: 36px;
 }
 
-/* ---------------- CONFETTI ---------------- */
-.confetti {
-  position: absolute;
-  top: -20px;
-  width: 6px;
-  height: 18px;
-  background: linear-gradient(to bottom, #d4af37, #f1e4b3);
-  opacity: 0.8;
-  animation: fall 5s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
-}
-
-/* ---------------- UNLOCK ---------------- */
+/* ---------- UNLOCK ---------- */
 #unlock {
+  z-index: 1;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -102,18 +102,11 @@ button {
   width: 100%;
   padding: 10px;
   margin-top: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
 }
 
-.hint {
-  margin-top: 12px;
-  font-size: 12px;
-  color: #666;
-}
-
-/* ---------------- DASHBOARD ---------------- */
+/* ---------- DASHBOARD ---------- */
 #dashboard {
+  z-index: 1;
   height: 100vh;
   padding: 40px;
 }
@@ -128,19 +121,13 @@ button {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
-}
-
-.card h3 {
-  margin-top: 0;
-  font-size: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
 .progress {
   height: 8px;
   background: #e5e7eb;
   border-radius: 4px;
-  overflow: hidden;
   margin-top: 10px;
 }
 
@@ -152,6 +139,9 @@ button {
 </head>
 
 <body>
+
+<!-- CONFETTI -->
+<div id="confetti-layer"></div>
 
 <!-- LANDING -->
 <div id="landing">
@@ -168,61 +158,42 @@ button {
 <div id="unlock" class="hidden">
   <div class="unlock-card">
     <strong>Protected Insights</strong>
-    <input type="password" id="password" placeholder="Enter password" />
-    <button style="margin-top:16px" id="submitPassword">Unlock</button>
-    <div class="hint">
+    <input id="password" placeholder="Enter password">
+    <button id="submitPassword" style="margin-top:16px">Unlock</button>
+    <p style="font-size:12px;color:#666;margin-top:10px">
       Hint: Month and year you landed in the US (no space)<br>
       example: december2050
-    </div>
+    </p>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="hidden">
   <div class="dashboard-grid">
-    <div class="card">
-      <h3>Practical Thinking</h3>
-      <div class="progress"><div style="width:92%"></div></div>
-    </div>
-
-    <div class="card">
-      <h3>Detail Orientation</h3>
-      <div class="progress"><div style="width:88%"></div></div>
-    </div>
-
-    <div class="card">
-      <h3>Ambition Index</h3>
-      <div class="progress"><div style="width:90%"></div></div>
-    </div>
-
-    <div class="card">
-      <h3>Softie (Hidden)</h3>
-      <p>Hard shell. Very soft core.</p>
-    </div>
-
-    <div class="card">
-      <h3>Indian Food Love</h3>
-      <p>Misses home in flavors.</p>
-    </div>
-
-    <div class="card">
-      <h3>LLM Curiosity</h3>
-      <p>Sees systems, not tools.</p>
-    </div>
+    <div class="card">Practical Thinking<div class="progress"><div style="width:92%"></div></div></div>
+    <div class="card">Detail Orientation<div class="progress"><div style="width:88%"></div></div></div>
+    <div class="card">Ambition Index<div class="progress"><div style="width:90%"></div></div></div>
+    <div class="card">Softie Inside<br>Hard shell, soft core.</div>
+    <div class="card">Indian Food Love<br>Misses home in flavors.</div>
+    <div class="card">LLM Curiosity<br>Sees systems.</div>
   </div>
 </div>
 
 <script>
-/* ---------- CONFETTI ---------- */
-for (let i = 0; i < 25; i++) {
+/* CONFETTI COLORS */
+const colors = ["#2563eb", "#22c55e", "#f59e0b", "#ec4899", "#8b5cf6"];
+const layer = document.getElementById("confetti-layer");
+
+for (let i = 0; i < 30; i++) {
   const c = document.createElement("div");
   c.className = "confetti";
   c.style.left = Math.random() * 100 + "vw";
-  c.style.animationDelay = Math.random() * 3 + "s";
-  document.body.appendChild(c);
+  c.style.background = colors[Math.floor(Math.random() * colors.length)];
+  c.style.animationDelay = Math.random() * 5 + "s";
+  layer.appendChild(c);
 }
 
-/* ---------- ELEMENTS ---------- */
+/* NAV */
 const landing = document.getElementById("landing");
 const unlock = document.getElementById("unlock");
 const dashboard = document.getElementById("dashboard");
@@ -233,8 +204,7 @@ document.getElementById("unlockBtn").onclick = () => {
 };
 
 document.getElementById("submitPassword").onclick = () => {
-  const val = document.getElementById("password").value;
-  if (val === "december2050") {
+  if (document.getElementById("password").value === "december2050") {
     unlock.classList.add("hidden");
     dashboard.classList.remove("hidden");
   } else {

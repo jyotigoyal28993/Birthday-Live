@@ -1,239 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Birthday Live</title>
+<meta charset="UTF-8" />
+<title>Is It His Birthday?</title>
 
 <style>
-* { box-sizing: border-box; }
+/* ---------- RESET ---------- */
+* {
+  box-sizing: border-box;
+}
 
+/* ---------- PAGE ---------- */
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #f8fafc;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8fafc; /* modern neutral */
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-/* ---------- COMMON ---------- */
-.hidden { display: none; }
-
-button {
-  padding: 10px 18px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  background: white;
-  cursor: pointer;
+/* ---------- CONTENT ---------- */
+.container {
+  text-align: center;
+  z-index: 2;
 }
 
-/* ---------- CONFETTI LAYER ---------- */
-#confetti-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
+.yes {
+  font-size: 96px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1;
 }
 
+.sub {
+  margin-top: 10px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #333;
+}
+
+/* ---------- CONFETTI (VERY SUBTLE) ---------- */
 .confetti {
   position: absolute;
   top: -20px;
-  width: 8px;
-  height: 14px;
-  opacity: 0.9;
+  width: 6px;
+  height: 16px;
+  opacity: 0.6;
   animation: fall 6s linear infinite;
+  pointer-events: none;
 }
 
 @keyframes fall {
   to {
-    transform: translateY(110vh) rotate(360deg);
+    transform: translateY(110vh);
   }
-}
-
-/* ---------- LANDING ---------- */
-#landing {
-  position: relative;
-  z-index: 1;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.landing-container {
-  text-align: center;
-}
-
-.landing-yes {
-  font-size: 96px;
-  font-weight: 700;
-  color: #111;
-}
-
-.landing-sub {
-  font-size: 22px;
-  margin-top: 6px;
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-}
-
-.landing-btn {
-  margin-top: 36px;
-}
-
-/* ---------- UNLOCK ---------- */
-#unlock {
-  z-index: 1;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.unlock-card {
-  background: white;
-  padding: 32px;
-  width: 320px;
-  border-radius: 10px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-  text-align: center;
-}
-
-.unlock-card input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 16px;
-}
-
-/* ---------- DASHBOARD ---------- */
-#dashboard {
-  z-index: 1;
-  height: 100vh;
-  padding: 40px;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-}
-
-.progress {
-  height: 8px;
-  background: #e5e7eb;
-  border-radius: 4px;
-  margin-top: 10px;
-}
-
-.progress div {
-  height: 100%;
-  background: #2563eb;
 }
 </style>
 </head>
 
 <body>
 
-<!-- CONFETTI -->
-<div id="confetti-layer"></div>
-
-<!-- LANDING -->
-<div id="landing">
-  <div class="landing-container">
-    <div class="landing-yes">Yes!</div>
-    <div class="landing-sub">🎂 Happy Birthday.</div>
-<button class="landing-btn" onclick="showUnlock()">
-  Unlock birthday insights →
-</button>
-
-  </div>
-</div>
-
-<!-- UNLOCK -->
-<div id="unlock" class="hidden">
-  <div class="unlock-card">
-    <strong>Protected Insights</strong>
-    <input id="password" placeholder="Enter password">
- <button style="margin-top:16px" onclick="submitPassword()">Unlock</button>
-    <p style="font-size:12px;color:#666;margin-top:10px">
-      Hint: Month and year you landed in the US (no space)<br>
-      example: december2050
-    </p>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" class="hidden">
-  <div class="dashboard-grid">
-    <div class="card">Practical Thinking<div class="progress"><div style="width:92%"></div></div></div>
-    <div class="card">Detail Orientation<div class="progress"><div style="width:88%"></div></div></div>
-    <div class="card">Ambition Index<div class="progress"><div style="width:90%"></div></div></div>
-    <div class="card">Softie Inside<br>Hard shell, soft core.</div>
-    <div class="card">Indian Food Love<br>Misses home in flavors.</div>
-    <div class="card">LLM Curiosity<br>Sees systems.</div>
-  </div>
+<div class="container">
+  <div class="yes">Yes.</div>
+  <div class="sub">🎂 Happy Birthday.</div>
 </div>
 
 <script>
-const landing = document.getElementById("landing");
-const unlock = document.getElementById("unlock");
-const dashboard = document.getElementById("dashboard");
+/* --- PREVIEW MODE: force Dec 25 --- */
+// const today = new Date();
+const today = new Date(2025, 11, 25); // Dec 25
 
-function showUnlock() {
-  landing.style.display = "none";
-  unlock.style.display = "flex";
+const isBirthday =
+  today.getDate() === 25 &&
+  today.getMonth() === 11;
+
+if (!isBirthday) {
+  document.querySelector(".yes").innerText = "No.";
+  document.querySelector(".sub").innerText = "";
 }
 
-function submitPassword() {
-  const val = document.getElementById("password").value;
-  if (val === "december2050") {
-    unlock.style.display = "none";
-    dashboard.style.display = "block";
-  } else {
-    alert("Incorrect password");
-  }
-}
-
-/* CONFETTI COLORS */
-const colors = ["#2563eb", "#22c55e", "#f59e0b", "#ec4899", "#8b5cf6"];
-const layer = document.getElementById("confetti-layer");
-
-for (let i = 0; i < 30; i++) {
+/* --- CONFETTI --- */
+const colors = ["#2563eb", "#22c55e", "#f59e0b", "#8b5cf6"];
+for (let i = 0; i < 20; i++) {
   const c = document.createElement("div");
   c.className = "confetti";
   c.style.left = Math.random() * 100 + "vw";
   c.style.background = colors[Math.floor(Math.random() * colors.length)];
   c.style.animationDelay = Math.random() * 5 + "s";
-  layer.appendChild(c);
+  document.body.appendChild(c);
 }
-
-/* NAV */
-const landing = document.getElementById("landing");
-const unlock = document.getElementById("unlock");
-const dashboard = document.getElementById("dashboard");
-
-document.getElementById("unlockBtn").onclick = () => {
-  landing.classList.add("hidden");
-  unlock.classList.remove("hidden");
-};
-
-document.getElementById("submitPassword").onclick = () => {
-  if (document.getElementById("password").value === "december2050") {
-    unlock.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-  } else {
-    alert("Incorrect password");
-  }
-};
 </script>
 
 </body>
 </html>
-
-

@@ -340,8 +340,7 @@ if(isBirthday){
   const vignette=document.getElementById("vignette");
 
   function throwRibbon(){
-    const count = 100; // number of ribbons per burst
-    const interval = setInterval(throwRibbon, 50);
+    const count = 50; // number of ribbons per burst
     for(let i=0;i<count;i++){
       const r=document.createElement("div");
       r.className="confetti"; // keep your existing class
@@ -520,6 +519,7 @@ Some things don’t need metrics.
 
 </body>
 </html>
+
 
 
 

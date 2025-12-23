@@ -539,6 +539,25 @@ Some things don’t need metrics.
           link.download = "personal-note.pdf";
           link.click();
         };
+        // Considerate card subtle animation
+const considerateCard = document.querySelector(".card:nth-child(3)");
+const considerateText = considerateCard.querySelector("p");
+const considerateFill = considerateCard.querySelector(".progress-fill");
+
+const words = ["Quietly", "notices", "what", "others", "need", "before", "they", "even", "ask"];
+let wordIndex = 0;
+
+setInterval(() => {
+  // Highlight a word temporarily
+  const textContent = words.map((w,i) => i===wordIndex ? `<span style="color:#f472b6;">${w}</span>` : w).join(" ");
+  considerateText.innerHTML = textContent;
+
+  // Wiggle progress bar slightly
+  considerateFill.style.transform = `translateX(${Math.random()*4-2}px)`;
+  
+  wordIndex = (wordIndex + 1) % words.length;
+}, 1000);
+
       },50);
 
     } else {
@@ -613,6 +632,7 @@ setInterval(() => {
 
 </body>
 </html>
+
 
 
 

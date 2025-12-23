@@ -438,7 +438,7 @@ A year-in-review, interpreted by someone who notices details.
             <h2>Overthinking</h2>
             <p>Brain opens 37 tabs, closes none. Trending downward compared to last year.</p>
             <div class="progress-wrapper">
-              <span class="progress-text">65%</span>
+              <span class="progress-text" id="overthinkingValue">65%</span>
               <div class="progress-bar"><div class="progress-fill" style="--w:65%; background:#22c55e;"></div></div>
             </div>
             <div class="insight">↓ Fewer late-night spiral loops than last year (or may be more):p</div>
@@ -544,10 +544,36 @@ Some things don’t need metrics.
     }
   }
 });
+  
+  // all your existing JS ABOVE
+  // birthday logic
+  // unlock logic
+  // dashboard render
+  // tooltip logic
+  // personal note logic
+
+  // ⬇️ ADD THIS AT THE VERY END ⬇️
+  const overthinkValues = [65, 72, 60, 70, 63, 68];
+  let overthinkIndex = 0;
+
+  setInterval(() => {
+    const val = overthinkValues[overthinkIndex];
+    const textEl = document.getElementById("overthinkingValue");
+    const barEl = document.querySelector(".card.overthinking .progress-fill");
+
+    if (textEl && barEl) {
+      textEl.textContent = val + "%";
+      barEl.style.width = val + "%";
+    }
+
+    overthinkIndex = (overthinkIndex + 1) % overthinkValues.length;
+  }, 450);
+
 </script>
 
 </body>
 </html>
+
 
 
 

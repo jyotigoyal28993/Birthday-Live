@@ -5,12 +5,7 @@
 <title>Is It His Birthday?</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
+* { box-sizing: border-box; margin:0; padding:0; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
 
 body {
   background-color: #0f172a;
@@ -22,100 +17,172 @@ body {
   overflow: hidden;
 }
 
-/* container */
+/* vignette */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 1;
+}
+
 .container {
   text-align: center;
   z-index: 2;
   width: 100%;
-  max-width: 700px;
+  max-width: 900px;
   padding: 20px;
 }
 
-.yes {
-  font-size: 96px;
-  font-weight: 800;
-  line-height: 1;
-}
+.yes { font-size: 96px; font-weight: 800; }
+.sub { margin-top:12px; font-size: 22px; display:flex; justify-content:center; gap:8px; opacity:0.9; }
 
-.sub {
-  margin-top: 12px;
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  opacity: 0.9;
-}
-
-/* unlock button */
 button {
-  margin-top: 32px;
-  background: #2563eb;
-  border: none;
-  color: white;
-  padding: 14px 22px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
+  margin-top:28px;
+  background:#2563eb;
+  border:none;
+  color:white;
+  padding:14px 20px;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
 }
-button:hover {
-  background: #1d4ed8;
-}
+button:hover { background:#1d4ed8; }
 
-/* unlock panel — HIDDEN BY DEFAULT */
 .unlock {
-  display: none;
-  margin-top: 28px;
-  background: #020617;
-  padding: 20px;
-  border-radius: 14px;
-  border: 1px solid #1e293b;
-  width: 280px;
-  margin-left: auto;
-  margin-right: auto;
+  display:none;
+  margin-top:30px;
+  background:#020617;
+  padding:20px;
+  border-radius:14px;
+  border:1px solid #1e293b;
+  width:280px;
+  margin-left:auto;
+  margin-right:auto;
 }
-
 .unlock input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #334155;
-  background: #ffffff;
-  color: #020617;
-  font-size: 15px;
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #334155;
+  background:#ffffff;
+  color:#020617;
 }
-
-.hint {
-  margin-top: 10px;
-  font-size: 13px;
-  opacity: 0.6;
-}
-
-.error {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #f87171;
-}
+.hint { margin-top:10px; font-size:13px; opacity:0.6; }
+.error { margin-top:10px; font-size:14px; }
 
 /* ribbons */
 .confetti {
   position: fixed;
   top: -40px;
-  width: 6px;
-  height: 18px;
-  border-radius: 2px;
-  pointer-events: none;
-  opacity: 0.95;
+  width:6px;
+  height:18px;
+  pointer-events:none;
+  border-radius:2px;
+}
+
+/* ---------- DASHBOARD ---------- */
+
+.dashboard-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:30px;
+}
+
+.header-left h1 {
+  font-size:32px;
+  font-weight:700;
+}
+
+.system {
+  margin-top:6px;
+  font-size:14px;
+  opacity:0.7;
+}
+
+.bug {
+  margin-top:6px;
+  display:inline-block;
+  background:rgba(251,191,36,0.15);
+  color:#fbbf24;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:13px;
+}
+
+.date {
+  font-size:16px;
+  opacity:0.7;
+}
+
+.cards {
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.card {
+  background:#111827;
+  border-radius:14px;
+  padding:22px;
+  width:260px;
+  box-shadow:0 10px 24px rgba(0,0,0,0.35);
+  opacity:0;
+  transform: translateY(14px);
+  animation: cardIn 0.6s ease forwards;
+}
+
+.card:nth-child(1){ animation-delay:0.2s; }
+.card:nth-child(2){ animation-delay:0.4s; }
+.card:nth-child(3){ animation-delay:0.6s; }
+.card:nth-child(4){ animation-delay:0.8s; }
+
+@keyframes cardIn {
+  to { opacity:1; transform:translateY(0); }
+}
+
+.card h2 {
+  font-size:18px;
+  margin-bottom:6px;
+}
+
+.card p {
+  font-size:14px;
+  opacity:0.75;
+  margin-bottom:12px;
+}
+
+.progress-bar {
+  height:10px;
+  background:#334155;
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.progress-fill {
+  height:100%;
+  border-radius:6px;
+  width:0;
+  animation: fillBar 1s ease forwards;
+}
+
+@keyframes fillBar {
+  to { width: var(--w); }
 }
 </style>
 </head>
 
 <body>
 
+<div class="vignette" id="vignette"></div>
+
 <div class="container">
   <div class="yes">Yes.</div>
   <div class="sub">🎂 Happy Birthday</div>
-
   <button id="unlockBtn">Unlock Birthday Insights</button>
 
   <div class="unlock" id="unlockPanel">
@@ -126,78 +193,86 @@ button:hover {
 </div>
 
 <script>
-// -------- DATE CHECK --------
-const today = new Date(2025, 11, 25); // preview
-const isBirthday = today.getDate() === 25 && today.getMonth() === 11;
+const today = new Date(2025,11,25);
+const isBirthday = today.getDate()===25 && today.getMonth()===11;
 
-if (!isBirthday) {
-  document.querySelector(".yes").innerText = "No.";
-  document.querySelector(".sub").innerText = "";
-  document.getElementById("unlockBtn").style.display = "none";
-}
+if(isBirthday){
+  const colors=["#38bdf8","#22c55e","#fbbf24","#a78bfa"];
+  const vignette=document.getElementById("vignette");
 
-// -------- RIBBON CELEBRATION (SINGLE BURST) --------
-const colors = ["#38bdf8", "#22c55e", "#fbbf24", "#a78bfa"];
-
-function throwRibbon(isHero = false) {
-  const ribbon = document.createElement("div");
-  ribbon.className = "confetti";
-
-  ribbon.style.width = isHero ? "14px" : "6px";
-  ribbon.style.height = isHero ? "38px" : "18px";
-  ribbon.style.left = Math.random() * 80 + 10 + "vw";
-  ribbon.style.background =
-    colors[Math.floor(Math.random() * colors.length)];
-
-  document.body.appendChild(ribbon);
-
-  const fall = window.innerHeight + 200;
-  const drift = (Math.random() - 0.5) * 220;
-  const rotation = (Math.random() - 0.5) * 1080;
-
-  ribbon.animate(
-    [
-      { transform: "translateY(-40px) translateX(0) rotate(0deg)" },
-      {
-        transform: `translateY(${fall}px) translateX(${drift}px) rotate(${rotation}deg)`
-      }
-    ],
-    {
-      duration: isHero ? 2600 : 2000 + Math.random() * 400,
-      easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-      fill: "forwards"
-    }
-  );
-
-  setTimeout(() => ribbon.remove(), 2800);
-}
-
-function celebrate() {
-  throwRibbon(true);          // hero ribbon
-  for (let i = 0; i < 14; i++) {
-    throwRibbon(false);       // supporting ribbons
+  function throwRibbon(){
+    const r=document.createElement("div");
+    r.className="confetti";
+    r.style.left=Math.random()*100+"vw";
+    r.style.background=colors[Math.floor(Math.random()*colors.length)];
+    document.body.appendChild(r);
+    r.animate([{transform:"translateY(-40px)"},{transform:`translateY(${innerHeight+200}px)`}],
+      {duration:2000,easing:"cubic-bezier(0.16,1,0.3,1)",fill:"forwards"});
+    setTimeout(()=>r.remove(),2300);
   }
+
+  vignette.style.opacity="1";
+  for(let i=0;i<30;i++) setTimeout(throwRibbon,i*80);
+  setTimeout(()=>vignette.style.opacity="0",1200);
 }
 
-if (isBirthday) celebrate();
+const unlockBtn=document.getElementById("unlockBtn");
+const panel=document.getElementById("unlockPanel");
+const password=document.getElementById("password");
+const error=document.getElementById("error");
 
-// -------- UNLOCK LOGIC --------
-const unlockBtn = document.getElementById("unlockBtn");
-const unlockPanel = document.getElementById("unlockPanel");
-const passwordInput = document.getElementById("password");
-const error = document.getElementById("error");
+unlockBtn.onclick=()=>{ panel.style.display="block"; unlockBtn.style.display="none"; };
 
-unlockBtn.onclick = () => {
-  unlockPanel.style.display = "block";
-  unlockBtn.style.display = "none";
-};
+password.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    if(password.value.toLowerCase()==="december2022"){
+      document.querySelector(".container").innerHTML=`
+        <div class="dashboard-header">
+          <div class="header-left">
+            <h1>🎉 Birthday Dashboard</h1>
+            <div class="system">System initializing…</div>
+            <div class="bug">⚠ Bug #042: Lovable · Status: Open · Won’t Fix</div>
+          </div>
+          <div class="date">Dec 25 🎂</div>
+        </div>
 
-passwordInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    if (passwordInput.value.toLowerCase() === "december2022") {
-      alert("Dashboard comes next. Landing + unlock are now stable.");
+        <div class="cards">
+          <div class="card">
+            <h2>Overthinking</h2>
+            <p>Cognitive loops reduced vs last year</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:65%; background:#22c55e;"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Ambitious</h2>
+            <p>Long-horizon goal intensity</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:88%; background:#2563eb;"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Considerate</h2>
+            <p>Stakeholder impact awareness</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:82%; background:#a78bfa;"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Detail-oriented</h2>
+            <p>Execution accuracy bias</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="--w:90%; background:#fbbf24;"></div>
+            </div>
+          </div>
+        </div>
+      `;
     } else {
-      error.innerText = "Incorrect password.";
+      error.style.color="#f87171";
+      error.innerText="Incorrect password.";
     }
   }
 });

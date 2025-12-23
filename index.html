@@ -113,16 +113,6 @@ button:hover { background:#1d4ed8; }
   100% { width: 88%; }
 }
 
-  .flyComma {
-  display:inline-block;
-  position:relative;
-}
-
-@keyframes flyCommaAnim {
-  0% { transform: translate(0,0) rotate(0deg); opacity:1; }
-  50% { transform: translate(50px,-40px) rotate(180deg); opacity:1; }
-  100% { transform: translate(0,-80px) rotate(360deg); opacity:0; }
-}
 
   .dashboard-header {
   display:flex;
@@ -474,11 +464,9 @@ A year-in-review, interpreted by someone who notices details.
             <div class="insight">Remembers things people forget they mentioned</div>
           </div>
 
-<div class="card" id="detailCard">
+<div class="card detail-oriented">
   <h2>Detail-oriented</h2>
-  <p id="detailText">
-    Spots the typo everyone else missed<span class="flyComma">.</span> Twice.
-  </p>
+  <p id="detailText">Spots the typo everyone else missed. Twice.</p>
   <div class="progress-wrapper">
     <span class="progress-text" id="detailValue">90%</span>
     <div class="progress-bar">
@@ -487,7 +475,6 @@ A year-in-review, interpreted by someone who notices details.
   </div>
   <div class="insight">Consistently identifies edge cases early.</div>
 </div>
-
 
 
           <div class="card">
@@ -552,17 +539,7 @@ Some things don’t need metrics.
           link.download = "personal-note.pdf";
           link.click();
         };
-        // Select the flying comma element
-  const detailComma = document.querySelector("#detailText .flyComma");
-  setInterval(() => {
-    if(detailComma){
-      detailComma.style.animation = "flyCommaAnim 1s ease forwards";
-      setTimeout(() => {
-        detailComma.style.animation = ""; // reset for next loop
-      }, 1000);
-    }
-  }, 3000);
-}, 50);
+      },50);
 
     } else {
       error.style.color="#f87171";
@@ -632,17 +609,10 @@ setInterval(() => {
 }, 800);
 
 
-
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
 
 
 

@@ -559,6 +559,59 @@ setInterval(() => {
   wordIndex = (wordIndex + 1) % words.length;
 }, 1000);
 
+        // Select the Playful card
+const playfulCard = Array.from(document.querySelectorAll(".card")).find(c => c.querySelector("h2")?.textContent === "Playful");
+
+// Emoji options
+const emojis = ["🎉", "😜", "✨", "🥳", "💫"];
+
+// Function to throw a tiny emoji
+function throwEmoji() {
+  if (!playfulCard) return;
+
+  const emoji = document.createElement("div");
+  emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  emoji.style.position = "absolute";
+  emoji.style.left = Math.random() * (playfulCard.offsetWidth - 20) + "px";
+  emoji.style.bottom = "10px";
+  emoji.style.fontSize = "18px";
+  emoji.style.pointerEvents = "none";
+  emoji.style.opacity = 1;
+
+  playfulCard.appendChild(emoji);
+
+  const xMove = (Math.random() * 80 - 40); // side movement
+  const duration = 1200 + Math.random() * 400;
+
+  emoji.animate([
+    { transform: `translate(0,0) scale(1)`, opacity: 1 },
+    { transform: `translate(${xMove}px,-80px) scale(1.2)`, opacity: 0 }
+  ], {
+    duration: duration,
+    easing: "ease-out",
+    fill: "forwards"
+  });
+
+  setTimeout(() => emoji.remove(), duration);
+}
+
+// Tiny card bounce
+function bounceCard() {
+  if (!playfulCard) return;
+  playfulCard.animate([
+    { transform: "translateY(0)" },
+    { transform: "translateY(-6px)" },
+    { transform: "translateY(0)" }
+  ], { duration: 500, easing: "ease-in-out" });
+}
+
+// Run every 3 seconds
+setInterval(() => {
+  throwEmoji();
+  bounceCard();
+}, 3000);
+
+
       },50);
 
     } else {
@@ -633,6 +686,7 @@ setInterval(() => {
 
 </body>
 </html>
+
 
 
 

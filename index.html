@@ -321,7 +321,7 @@ button:hover { background:#1d4ed8; }
 
 <div class="container">
   <div class="yes">Yes.</div>
-  <div class="sub">🎂 Happy Birthday</div>
+  <div class="sub">🎂 Happy Birthday!</div>
   <button id="unlockBtn">Unlock Birthday Insights</button>
 
   <div class="unlock" id="unlockPanel">
@@ -625,7 +625,7 @@ if (detailText) {
     setTimeout(() => {
       detailText.textContent = "Spots the typo everyone else missed. Twice.";
     }, 700);
-  }, 4000);
+  }, 1500);
 }
 
 
@@ -682,27 +682,12 @@ barEl.style.background = colors[Math.floor(Math.random()*colors.length)];
   ambitiousIndex = (ambitiousIndex + 1) % ambitiousValues.length;
 }, 600);
 
-// Detail-oriented: subtle typo correction (text only)
-const detailText = document.getElementById("detailText");
-
-if (detailText) {
-  setInterval(() => {
-    // Introduce a tiny typo
-    detailText.textContent = "Spots the typo everyoen else missed. Twice.";
-
-    // Quietly fix it
-    setTimeout(() => {
-      detailText.textContent = "Spots the typo everyone else missed. Twice.";
-    }, 700);
-  }, 4000);
-}
-
-
 
 </script>
 
 </body>
 </html>
+
 
 
 

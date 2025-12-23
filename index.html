@@ -414,7 +414,26 @@ password.addEventListener("keydown",e=>{
     }
   }
 });
+  <!-- Button to show personal note -->
+<div style="margin-top:20px; text-align:center;">
+  <button id="showNoteBtn">📄 Open Personal Note</button>
+</div>
+
+<!-- Hidden container for note -->
+<div id="personalNote" style="display:none; margin-top:20px; text-align:center;">
+  <embed src="/mnt/data/8d513632-f3ce-4790-a382-a613f70b07b8.pdf" type="application/pdf" width="300" height="400">
+</div>
+
+<script>
+const showNoteBtn = document.getElementById("showNoteBtn");
+const personalNote = document.getElementById("personalNote");
+
+showNoteBtn.addEventListener("click", () => {
+  personalNote.style.display = personalNote.style.display === "none" ? "block" : "none";
+});
+
 </script>
 
 </body>
 </html>
+

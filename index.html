@@ -448,7 +448,7 @@ A year-in-review, interpreted by someone who notices details.
             <h2>Ambitious</h2>
             <p>Sees the mountain, plans the climb, already thinking of the next one.</p>
             <div class="progress-wrapper">
-              <span class="progress-text">88%</span>
+              <span class="progress-text" id="ambitiousValue">88%</span>
               <div class="progress-bar"><div class="progress-fill" style="--w:88%; background:#2563eb;"></div></div>
             </div>
             <div class="insight">↑ Sets goals slightly above what’s expected</div>
@@ -568,11 +568,28 @@ Some things don’t need metrics.
 
     overthinkIndex = (overthinkIndex + 1) % overthinkValues.length;
   }, 450);
+  const ambitiousValues = [88, 92, 96, 90, 94];
+let ambitiousIndex = 0;
+
+setInterval(() => {
+  const val = ambitiousValues[ambitiousIndex];
+  const textEl = document.getElementById("ambitiousValue");
+  const barEl = document.querySelector(".card.ambitious .progress-fill");
+
+  if (textEl && barEl) {
+    textEl.textContent = val + "%";
+    barEl.style.width = val + "%";
+  }
+
+  ambitiousIndex = (ambitiousIndex + 1) % ambitiousValues.length;
+}, 600);
+
 
 </script>
 
 </body>
 </html>
+
 
 
 

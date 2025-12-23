@@ -613,6 +613,20 @@ setInterval(() => {
   throwEmoji();
   bounceCard();
 }, 3000);
+// Detail-oriented: subtle typo correction (TEXT ONLY)
+const detailText = document.getElementById("detailText");
+
+if (detailText) {
+  setInterval(() => {
+    // introduce tiny typo
+    detailText.textContent = "Spots the typo everyoen else missed. Twice.";
+
+    // quietly fix it
+    setTimeout(() => {
+      detailText.textContent = "Spots the typo everyone else missed. Twice.";
+    }, 250);
+  }, 4000);
+}
 
 
       },50);
@@ -689,6 +703,7 @@ if (detailText) {
 
 </body>
 </html>
+
 
 
 

@@ -552,6 +552,18 @@ Some things don’t need metrics.
           link.download = "personal-note.pdf";
           link.click();
         };
+        // Select the flying comma element
+const detailComma = document.querySelector("#detailText .flyComma");
+
+// Animate the comma every 3 seconds
+setInterval(() => {
+  if(detailComma){
+    detailComma.style.animation = "flyCommaAnim 1s ease forwards";
+    setTimeout(() => {
+      detailComma.style.animation = ""; // reset for next loop
+    }, 1000);
+  }
+}, 3000);
       },50);
 
     } else {
@@ -620,24 +632,14 @@ setInterval(() => {
   document.getElementById("detailValue").textContent = val + "%";
   detailIndex = (detailIndex + 1) % detailValues.length;
 }, 800);
-// Select the flying comma element
-const detailComma = document.querySelector("#detailText .flyComma");
 
-// Animate the comma every 3 seconds
-setInterval(() => {
-  if(detailComma){
-    detailComma.style.animation = "flyCommaAnim 1s ease forwards";
-    setTimeout(() => {
-      detailComma.style.animation = ""; // reset for next loop
-    }, 1000);
-  }
-}, 3000);
 
 
 </script>
 
 </body>
 </html>
+
 
 
 

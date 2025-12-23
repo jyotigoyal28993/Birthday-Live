@@ -113,17 +113,7 @@ button:hover { background:#1d4ed8; }
   100% { width: 88%; }
 }
 
-.flyComma {
-  display:inline-block;
-  position:relative;
-  cursor:default;
-}
 
-@keyframes flyCommaAnim {
-  0% { transform: translate(0,0) rotate(0deg); }
-  50% { transform: translate(50px,-40px) rotate(180deg); }
-  100% { transform: translate(0,-80px) rotate(360deg); opacity:0; }
-}
   .dashboard-header {
   display:flex;
   justify-content:space-between;
@@ -474,13 +464,11 @@ A year-in-review, interpreted by someone who notices details.
             <div class="insight">Remembers things people forget they mentioned</div>
           </div>
 
-<div class="card" id="detailCard">
+<div class="card detail-oriented">
   <h2>Detail-oriented</h2>
-  <p id="detailText">
-    Spots the typo everyone else missed<span class="flyComma">.</span> Twice.
-  </p>
+  <p id="detailText">Spots the typo everyone else missed. Twice.</p>
   <div class="progress-wrapper">
-    <span class="progress-text">90%</span>
+    <span class="progress-text" id="detailValue">90%</span>
     <div class="progress-bar">
       <div class="progress-fill" style="--w:90%; background:#fbbf24;"></div>
     </div>
@@ -601,21 +589,30 @@ setInterval(() => {
 const detailValues = [90, 92, 88, 91, 90];
 let detailIndex = 0;
 
-const comma = document.querySelector("#detailText .flyComma");
-
-// trigger the flying comma animation every 3 seconds
 setInterval(() => {
-  comma.style.animation = "flyCommaAnim 1s ease forwards";
-  setTimeout(() => comma.style.animation = "", 1000);
-}, 3000);
+  const val = detailValues[detailIndex];
+  const textEl = document.getElementById("detailText");
+  const barEl = document.querySelector(".card.detail-oriented .progress-fill");
+  
+  // Wiggle the bar slightly
+  barEl.style.width = val + "%";
+  barEl.style.transform = `translateX(${Math.random()*4 - 2}px)`; // tiny shake
+  
+  // Add a tiny “typo” flash in text
+  if(textEl){
+    textEl.textContent = "Spots the typo everyoen else missed. Twice.";
+    setTimeout(()=>textEl.textContent="Spots the typo everyone else missed. Twice.",200);
+  }
+  
+  document.getElementById("detailValue").textContent = val + "%";
+  detailIndex = (detailIndex + 1) % detailValues.length;
+}, 800);
+
 
 </script>
 
 </body>
 </html>
-
-
-
 
 
 

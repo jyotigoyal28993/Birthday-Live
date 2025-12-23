@@ -96,15 +96,18 @@ button:hover { background:#1d4ed8; }
   100% { width: 65%; }
 }
 .card.ambitious .progress-fill {
-  animation: ambitionClimb 6s ease-in-out infinite;
+  animation: ambitionStep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@keyframes ambitionClimb {
+@keyframes ambitionStep {
   0%   { width: 88%; }
-  40%  { width: 90%; }
-  60%  { width: 90%; }
+  20%  { width: 88%; }
+  40%  { width: 92%; } /* step up */
+  55%  { width: 90%; }
+  75%  { width: 88%; } /* settles back */
   100% { width: 88%; }
 }
+
 
   .dashboard-header {
   display:flex;
@@ -540,6 +543,7 @@ Some things don’t need metrics.
 
 </body>
 </html>
+
 
 
 

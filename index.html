@@ -252,6 +252,7 @@ unlockBtn.onclick=()=>{ panel.style.display="block"; unlockBtn.style.display="no
 password.addEventListener("keydown",e=>{
   if(e.key==="Enter"){
     if(password.value.toLowerCase()==="december2022"){
+      document.body.style.overflow = "auto";
       document.querySelector(".container").innerHTML=`
         <div class="dashboard-header">
           <h1>🎉 Birthday Dashboard</h1>
@@ -313,5 +314,6 @@ password.addEventListener("keydown",e=>{
 
 </body>
 </html>
+
 
 

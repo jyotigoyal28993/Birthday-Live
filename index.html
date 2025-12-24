@@ -41,7 +41,7 @@ body {
 .sub { margin-top:12px; font-size: 22px; display:flex; justify-content:center; gap:8px; opacity:0.9; }
 
 button {
-  margin-top:28px;
+  margin-top:18px;
   background:#2563eb;
   border:none;
   color:white;
@@ -280,7 +280,7 @@ button:hover { background:#1d4ed8; }
 /* ---------- FOOTER BUG (PHASE 2) ---------- */
 
 .dashboard-footer {
-  margin-top:32px;
+  margin-top:16px;
   font-size:14px;
   opacity:0.8;
   text-align:center;
@@ -360,10 +360,12 @@ button:hover { background:#1d4ed8; }
   font-size:18px;
   color:#f87171;
 }
-  .note-btn {
+.note-btn {
   position: relative;
   overflow: hidden;
+  margin-top: 12px;     /* ⬆️ pulls it up */
 }
+
 
 .note-btn.opening {
   animation: envelopeOpen 0.6s ease forwards;
@@ -846,6 +848,7 @@ barEl.style.background = colors[Math.floor(Math.random()*colors.length)];
 
 </body>
 </html>
+
 
 
 

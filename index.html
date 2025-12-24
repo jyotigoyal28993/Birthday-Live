@@ -86,6 +86,20 @@ button:hover { background:#1d4ed8; }
 
 /* ---------- DASHBOARD ---------- */
 
+  /* --- Easter Egg: Overthinking Hover --- */
+.stare-egg {
+  font-size: 12px;
+  margin-top: 8px;
+  opacity: 0;
+  color: #94a3b8;
+  transition: opacity 0.4s ease;
+}
+
+.stare-egg.visible {
+  opacity: 1;
+}
+
+
 .card.overthinking .progress-fill {
   animation: overthinkJump 2.8s ease-in-out infinite;
 }
@@ -453,6 +467,7 @@ A year-in-review, interpreted by someone who notices details.
               <div class="progress-bar"><div class="progress-fill" style="--w:65%; background:#22c55e;"></div></div>
             </div>
             <div class="insight">↓ Fewer late-night spiral loops than last year (or may be more):p</div>
+            <div class="stare-egg" id="stareEgg">Yes, this card noticed you staring.</div>
           </div>
 
           <div class="card ambitious">
@@ -642,6 +657,22 @@ if (detailText) {
     });
   }, 1100);
 }
+setTimeout(() => {
+  const card = document.getElementById("overthinkingCard");
+  const egg = document.getElementById("stareEgg");
+  let timer;
+
+  card.addEventListener("mouseenter", () => {
+    timer = setTimeout(() => {
+      egg.classList.add("visible");
+    }, 4000); // 4 seconds
+  });
+
+  card.addEventListener("mouseleave", () => {
+    clearTimeout(timer);
+    egg.classList.remove("visible");
+  });
+}, 100);
 
 
       },50);
@@ -702,6 +733,7 @@ barEl.style.background = colors[Math.floor(Math.random()*colors.length)];
 
 </body>
 </html>
+
 
 
 

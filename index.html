@@ -85,10 +85,28 @@ button:hover { background:#1d4ed8; }
 }
 
 /* ---------- DASHBOARD ---------- */
-  <!-- Screenshot Easter Egg Toast -->
-<div class="screenshot-toast" id="screenshotToast">
-  📸 This moment was worth capturing.
-</div>
+.screenshot-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #020617;
+  color: #e5e7eb;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  opacity: 0;                 /* 👈 hidden by default */
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.screenshot-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 .progress-text {
   font-size: 13px;
@@ -764,6 +782,33 @@ if (overthinkingValue && overthinkingBar) {
     overthinkingBar.style.animation = "fillBar 0.6s ease forwards";
   });
 }
+        // Screenshot Easter Egg
+const toast = document.getElementById("screenshotToast");
+let toastTimer;
+
+function showScreenshotToast() {
+  if (!toast) return;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+// Detect screenshot shortcuts
+document.addEventListener("keydown", (e) => {
+  const isMacScreenshot =
+    (e.metaKey && e.shiftKey && (e.key === "4" || e.key === "3"));
+  const isWindowsScreenshot =
+    e.key === "PrintScreen";
+
+  if (isMacScreenshot || isWindowsScreenshot) {
+    showScreenshotToast();
+  }
+});
+
       },50);
 
     } else {
@@ -850,6 +895,7 @@ document.addEventListener("keydown", (e) => {
 
 </body>
 </html>
+
 
 
 

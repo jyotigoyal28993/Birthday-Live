@@ -657,22 +657,27 @@ if (detailText) {
     });
   }, 1100);
 }
+// ---- Easter Egg #1: Overthinking stare ----
 setTimeout(() => {
-  const card = document.getElementById("overthinkingCard");
+  const card = document.querySelector(".card.overthinking");
   const egg = document.getElementById("stareEgg");
-  let timer;
+
+  if (!card || !egg) return;
+
+  let stareTimer;
 
   card.addEventListener("mouseenter", () => {
-    timer = setTimeout(() => {
+    stareTimer = setTimeout(() => {
       egg.classList.add("visible");
-    }, 4000); // 4 seconds
+    }, 4000); // 4s intentional stare
   });
 
   card.addEventListener("mouseleave", () => {
-    clearTimeout(timer);
+    clearTimeout(stareTimer);
     egg.classList.remove("visible");
   });
-}, 100);
+}, 150);
+
 
 
       },50);
@@ -733,6 +738,7 @@ barEl.style.background = colors[Math.floor(Math.random()*colors.length)];
 
 </body>
 </html>
+
 
 
 

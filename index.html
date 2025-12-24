@@ -85,6 +85,11 @@ button:hover { background:#1d4ed8; }
 }
 
 /* ---------- DASHBOARD ---------- */
+  <!-- Screenshot Easter Egg Toast -->
+<div class="screenshot-toast" id="screenshotToast">
+  📸 This moment was worth capturing.
+</div>
+
 .progress-text {
   font-size: 13px;
   opacity: 0.7;
@@ -806,12 +811,45 @@ barEl.style.background = colors[Math.floor(Math.random()*colors.length)];
 
   ambitiousIndex = (ambitiousIndex + 1) % ambitiousValues.length;
 }, 600);
+// ---------- Screenshot Easter Egg ----------
+
+const screenshotToast = document.getElementById("screenshotToast");
+let screenshotTimeout;
+
+function showScreenshotToast() {
+  if (!screenshotToast) return;
+
+  screenshotToast.classList.add("visible");
+
+  clearTimeout(screenshotTimeout);
+  screenshotTimeout = setTimeout(() => {
+    screenshotToast.classList.remove("visible");
+  }, 2200);
+}
+
+// Detect screenshot keys
+document.addEventListener("keydown", (e) => {
+  // Windows / Linux: PrintScreen
+  if (e.key === "PrintScreen") {
+    showScreenshotToast();
+  }
+
+  // macOS: Cmd + Shift + 4
+  if (e.metaKey && e.shiftKey && e.key === "4") {
+    showScreenshotToast();
+  }
+});
 
 
 </script>
+<!-- Screenshot Easter Egg Toast -->
+<div class="screenshot-toast" id="screenshotToast">
+  📸 This moment was worth capturing.
+</div>
 
 </body>
 </html>
+
 
 
 

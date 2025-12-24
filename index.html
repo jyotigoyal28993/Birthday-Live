@@ -781,33 +781,40 @@ if (overthinkingValue && overthinkingBar) {
     overthinkingBar.offsetHeight; // force reflow
     overthinkingBar.style.animation = "fillBar 0.6s ease forwards";
   });
-}
-        // Screenshot Easter Egg
-const toast = document.getElementById("screenshotToast");
-let toastTimer;
+}// ---------- Screenshot Easter Egg (STABLE & SAFE) ----------
+const screenshotToast = document.getElementById("screenshotToast");
+let screenshotTimer;
 
 function showScreenshotToast() {
-  if (!toast) return;
+  if (!screenshotToast) return;
 
-  toast.classList.add("show");
+  screenshotToast.classList.add("show");
 
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
+  clearTimeout(screenshotTimer);
+  screenshotTimer = setTimeout(() => {
+    screenshotToast.classList.remove("show");
   }, 2200);
 }
 
-// Detect screenshot shortcuts
+// macOS screenshot shortcuts
 document.addEventListener("keydown", (e) => {
-  const isMacScreenshot =
-    (e.metaKey && e.shiftKey && (e.key === "4" || e.key === "3"));
-  const isWindowsScreenshot =
-    e.key === "PrintScreen";
+  if (e.metaKey && e.shiftKey && (e.key === "4" || e.key === "3")) {
+    showScreenshotToast();
+  }
 
-  if (isMacScreenshot || isWindowsScreenshot) {
+  // Windows Snipping Tool (this one actually fires)
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "s") {
     showScreenshotToast();
   }
 });
+
+// Fallback: browser loses focus (very common during screenshots)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    showScreenshotToast();
+  }
+});
+
 
       },50);
 
@@ -895,6 +902,7 @@ document.addEventListener("keydown", (e) => {
 
 </body>
 </html>
+
 
 
 

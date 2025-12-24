@@ -85,15 +85,6 @@ button:hover { background:#1d4ed8; }
 }
 
 /* ---------- DASHBOARD ---------- */
-
-  .progress-text {
-  cursor: pointer;
-  user-select: none;
-}
-.progress-text.active {
-  color: #f472b6;
-}
-
 .progress-text {
   font-size: 13px;
   opacity: 0.7;
@@ -119,6 +110,10 @@ button:hover { background:#1d4ed8; }
   opacity: 1;
 }
 
+
+.card.overthinking .progress-fill {
+  animation: overthinkJump 2.8s ease-in-out infinite;
+}
 
 @keyframes overthinkJump {
   0%   { width: 65%; }
@@ -707,14 +702,12 @@ if (overthinkingValue && overthinkingBar) {
 
   let index = 0;
 
-  overthinkingValue.style.cursor = "pointer";
-  overthinkingValue.title = "Click for analytics mode";
-
   overthinkingValue.addEventListener("click", (e) => {
     e.stopPropagation();
     index = (index + 1) % states.length;
 
     overthinkingValue.textContent = states[index].label;
+    overthinkingValue.classList.add("active");
     overthinkingValue.title = states[index].note;
 
     overthinkingBar.style.setProperty("--w", states[index].width);
@@ -723,44 +716,6 @@ if (overthinkingValue && overthinkingBar) {
     overthinkingBar.style.animation = "fillBar 0.6s ease forwards";
   });
 }
-// ---- Easter Egg #2: Fake Analytics Mode ----
-const overthinkingValue = document.getElementById("overthinkingValue");
-const overthinkingBar = document.querySelector(".card.overthinking .progress-fill");
-
-if (overthinkingValue && overthinkingBar) {
-  const states = [
-    { label: "65%", width: "65%", note: "Baseline (self-reported)" },
-    { label: "72%", width: "72%", note: "Detected during late-night thinking" },
-    { label: "58%", width: "58%", note: "Adjusted after reality checks" },
-    { label: "??%", width: "65%", note: "Confidence interval unstable" }
-  ];
-
-  let index = 0;
-  let resumeTimer;
-
-  overthinkingBar.style.animation = "overthinkJump 2.8s ease-in-out infinite";
-  overthinkingValue.style.cursor = "pointer";
-  overthinkingValue.title = "Click for analytics mode";
-
-  overthinkingValue.addEventListener("click", (e) => {
-    e.stopPropagation();
-    index = (index + 1) % states.length;
-
-    // Pause natural animation
-    overthinkingBar.style.animation = "none";
-
-    overthinkingValue.textContent = states[index].label;
-    overthinkingValue.title = states[index].note;
-    overthinkingBar.style.width = states[index].width;
-
-    clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(() => {
-      overthinkingBar.style.animation = "overthinkJump 2.8s ease-in-out infinite";
-      overthinkingValue.textContent = "65%";
-    }, 4000);
-  });
-}
-
       },50);
 
     } else {
@@ -777,7 +732,22 @@ if (overthinkingValue && overthinkingBar) {
   // tooltip logic
   // personal note logic
 
- 
+  // ⬇️ ADD THIS AT THE VERY END ⬇️
+  const overthinkValues = [65, 72, 60, 70, 63, 68];
+  let overthinkIndex = 0;
+
+  setInterval(() => {
+    const val = overthinkValues[overthinkIndex];
+    const textEl = document.getElementById("overthinkingValue");
+    const barEl = document.querySelector(".card.overthinking .progress-fill");
+
+    if (textEl && barEl) {
+      textEl.textContent = val + "%";
+      barEl.style.width = val + "%";
+    }
+
+    overthinkIndex = (overthinkIndex + 1) % overthinkValues.length;
+  }, 450);
  // Ambitious dynamic pulse (point 1)
 const ambitiousValues = [88, 92, 85, 95, 90, 93];
 let ambitiousIndex = 0;
@@ -804,10 +774,6 @@ barEl.style.background = colors[Math.floor(Math.random()*colors.length)];
 
 </body>
 </html>
-
-
-
-
 
 
 

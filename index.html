@@ -337,6 +337,30 @@ button:hover { background:#1d4ed8; }
   font-size:18px;
   color:#f87171;
 }
+  .note-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.note-btn.opening {
+  animation: envelopeOpen 0.6s ease forwards;
+}
+
+@keyframes envelopeOpen {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.95) rotate(-1deg); }
+  70% { transform: scale(1.05) rotate(1deg); }
+  100% { transform: scale(1); }
+}
+
+/* subtle authenticity cue */
+.note-auth {
+  margin-top: 8px;
+  font-size: 11px;
+  opacity: 0.6;
+  font-style: italic;
+}
+
 </style>
 <!-- Privacy-friendly analytics by Plausible -->
 <script
@@ -370,7 +394,10 @@ button:hover { background:#1d4ed8; }
     <span class="note-close">✖</span>
     <h2>Personal Note 💌</h2>
     <embed src="PDF_1754.pdf" type="application/pdf" width="100%" height="400px" id="pdfEmbed">
-
+    <!-- Phase 3: authenticity cue -->
+    <div class="note-auth">
+      Written once. Left unchanged.
+    </div>
     <!-- Download button -->
     <div style="margin-top:15px;">
       <button id="downloadBtn" style="width:100%; padding:10px; border:none; border-radius:8px; background:#2563eb; color:white; cursor:pointer;">
@@ -537,7 +564,10 @@ A year-in-review, interpreted by someone who notices details.
             </div>
           </span>
           <br><br>
-          <button id="openNote">📄 Personal Note</button>
+          <button id="openNote" class="note-btn">
+  ✉️ Open Birthday Note
+</button>
+
                 <div style="margin-top:10px; font-size:12px; opacity:0.7;">
   Curated with care.
 Delivered without metrics.
@@ -567,7 +597,15 @@ Delivered without metrics.
         const downloadBtn=document.getElementById("downloadBtn");
         const pdfEmbed=document.getElementById("pdfEmbed");
 
-        openNoteBtn.onclick = () => overlay.classList.add("visible");
+       openNoteBtn.onclick = () => {
+  openNoteBtn.classList.add("opening");
+
+  setTimeout(() => {
+    overlay.classList.add("visible");
+    openNoteBtn.classList.remove("opening");
+  }, 600);
+};
+
         closeBtn.onclick = () => overlay.classList.remove("visible");
         overlay.onclick = (e) => { if(e.target===overlay) overlay.classList.remove("visible"); };
 
@@ -774,6 +812,7 @@ barEl.style.background = colors[Math.floor(Math.random()*colors.length)];
 
 </body>
 </html>
+
 
 
 
